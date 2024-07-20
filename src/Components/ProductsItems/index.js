@@ -14,6 +14,15 @@ const [isOpenProductModal, setIsOpenProductModal] = React.useState(false);
   const viewProductDetails = (id) => {
     setIsOpenProductModal(true);
   }
+
+
+const closeProductModal=() =>{
+
+  setIsOpenProductModal(false);
+}
+
+
+
   return (
    <>
     
@@ -47,7 +56,7 @@ const [isOpenProductModal, setIsOpenProductModal] = React.useState(false);
 
 {
 
-isOpenProductModal===true && <ProductModal />                                                   
+isOpenProductModal===true && <ProductModal  closeProductModal= {closeProductModal} />                                                   
 }
 
 

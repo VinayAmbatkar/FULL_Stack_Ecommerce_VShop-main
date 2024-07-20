@@ -68,10 +68,10 @@ header .part3 .circle svg{font-size: 18px !important;}
 .locationModal .countrylist{margin: 0px; max-height: 400px;overflow-y: scroll;overflow-x: hidden;}
 .locationModal .countrylist li{ width: 100%;list-style: none;}
 .locationModal .countrylist button{ width: 100%;text-transform: uppercase; color: black; justify-content: flex-start; padding: 10px 20px !important;}
- .closeb{position: absolute;top: 10px;right: 10px;color: black; min-width:40px !important; width: 40px !important; height: 40px !important; border-radius: 50% !important;}
+ .closeb{position: absolute !important;top: 10px;right: 10px;color: black; min-width:40px !important; width: 40px !important; height: 40px !important; border-radius: 50% !important;}
  .closeb svg{font-size: 22px;}
 /* LocationModel */
-
+ 
 
 
 
