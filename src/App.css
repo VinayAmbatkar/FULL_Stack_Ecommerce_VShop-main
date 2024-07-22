@@ -234,3 +234,33 @@ footer .topInfo .col h4{font-size: 18px; font-weight: 600; margin: 20px 0px;}
 .copyright ul li a:hover{background: #f0faff; cursor: pointer;}
 .copyright ul li a:hover svg{color: #2bbef9; cursor: pointer;}
 /* Footer */
+
+.productModal .actions button{opacity:  1 !important;}
+.productModal .actions button svg.text-danger{color: #ed174a  !important; opacity: 1 !important;}
+
+.productModal .MuiPaper-elevation{ padding: 25px; position: relative; max-width: 900px !important; width: 900px !important;}
+
+.productModal h4{font-size: 20px !important; color: rgba(0,0,0,0.8) !important;}
+
+
+/* Product zoom  start css */
+
+.productZoom{ width: 100%; height: auto;  padding: 0px; overflow: hidden; border-radius: 15px;}
+.productZoom .badge{position: absolute; top: 20px; left: 20px; z-index: 100;}
+.zoomSliderBig{width: 100% !important;}
+.productZoomBig{height: 350px; overflow: hidden;}
+
+.productDetails .productZoomBig{height: 350px !important;}
+
+.zoomSlider{padding-top: 30px;}
+.zoomSlider *{outline: none !important;}
+.zoomSlider .item{border: 2px solid transparent !important; overflow: hidden; border-radius: 8px; cursor: pointer; height: 70px !important;}
+.zoomSlider .item_active{border: 2px solid rgba(0,0,0,0.3) !important; }
+.zoomSlider .item img{height: 100%; object-fit: cover;}
+.zoomSlider .swiper-button-prev{width: 30px !important; height: 30px !important; top: 60% !important; left: -3% !important;}
+.zoomSlider .swiper-button-next{width: 30px !important; height: 30px !important; top: 60% !important; right: -3% !important;}
+
+.zoomSlider .swiper-slide .item{opacity: 0.5;}
+.zoomSlider .swiper-slide .item_active{opacity: 1 !important;}
+
+/* Product zoom  end css */
