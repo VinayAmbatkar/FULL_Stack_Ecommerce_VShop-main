@@ -55,7 +55,7 @@ const ProductModal = (props) => {
         <div>
             <Dialog open={true} className='productModal' onClose={() => props.closeProductModal(false)}>
                 <Button className='closeb' onClick={() => props.closeProductModal(false)} ><IoCloseOutline /></Button>
-                <h4 className='mb-1 font-wight-bold'>Fresh Brown Coconut</h4>
+                <h4 className='mb-1 font-wight-bold'>All Natural Italian-Style Chicken Meatballs</h4>
                 <div className="d-flex align-item-center">
                     <div className="d-flex align-items-center mr-4">
                         <span>Brand:</span>
@@ -70,7 +70,8 @@ const ProductModal = (props) => {
                 <hr />
                 <div className=" row  mt-2 productDetailsModal">
                     <div className="col-md-5">
-                        <div className="productZoom">
+                        <div className="productZoom position-relative">
+                            <div className="badge badge-primary"> 23%</div>
                             <Slider {...settings2} className='zoomSliderBig' ref={zoomSliderBig}>
 
                                 <div className="item">
@@ -146,10 +147,8 @@ const ProductModal = (props) => {
                         </div>
 
                         <span className='badge bg-success'>In Stock </span>
-                        <p className='mt-3'> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime deleniti minima dolor, eligendi debitis inventore aperiam dignissimos
-                            delectus corporis accusamus nam quis
-                            eveniet commodi? Sit fuga repellendus
-                            aliquid quo nulla.</p>
+                        <p className='mt-3'> Experience the rich flavors of India with our succulent chicken meatballs. Infused with authentic spices like cumin, coriander, and garam masala, these meatballs offer a delightful taste in every
+                             bite. Perfect as appetizers or in curries.</p>
 
                         <div className="d-flex align-items-center">
 
@@ -162,9 +161,9 @@ const ProductModal = (props) => {
                         </div>
 
 
-                        <div className="d-flex align-items-center mt-3 actions">
+                        <div className="d-flex align-items-center mt-5 actions">
                             <Button className='btn-round btn-small' variant='outlined'><IoIosHeartEmpty />&nbsp;Add to Wishlist</Button>
-                            <Button className='btn-round btn-small' variant='outlined'><MdCompareArrows />&nbsp;Compare </Button>
+                            <Button className='btn-round btn-small ml-3' variant='outlined'><MdCompareArrows />&nbsp;Compare </Button>
 
                         </div>
 

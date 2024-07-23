@@ -29,7 +29,7 @@ const closeProductModal=() =>{
 
 <div className=" item productItem">
   <div className="imageWrapper">
-    <img src="https://klbtheme.com/bacola/wp-content/uploads/2021/04/product-image-56-346x310.jpg" className='w-100' />
+    <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg" className='w-100' />
 
 
     <span className='badge badge-primary'>28%</span>
