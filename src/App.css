@@ -24,6 +24,16 @@ body{
       max-width: 1200px;
   }
 }
+.badge{display: inline-block; padding: 7px 10px; }
+.badge.bg-success{background: #e5f8ed !important; color: #16b858;}
+
+.btn-blue{background: #233a95 !important; color: #fff !important; text-transform: capitalize;}
+.btn-big{font-size:15px !important ; padding: 7px 30px !important;}
+.btn-round{border-radius: 30px !important;}
+.btn-small{font-size: 13px !important; color: #000;}
+.btn-small svg{font-size: 15px !important;}
+button{text-transform: capitalize !important;}
+
 
 .cursor{cursor: pointer;}
 .text-light{color:#acacad !important;}
@@ -145,8 +155,10 @@ nav .navPart2 ul li:hover .submenu{opacity: 1; visibility: inherit; top:100%;}
 .productItem .badge{display:inline-block;padding: 7px 10 px;position: absolute; top: 10px;left: 10px;z-index: 100;font-size:13px;}
 .productItem .info h4{ font-size: 15px; font-weight: 600;}
 .productItem .info{padding: 15px}
-.productItem .info .oldPrice{font-size: 15px;font-weight: bold; color: rgb(0, 0, 0.8); text-decoration: line-through;}
-.productItem .info .netPrice{font-size: 15px;font-weight: bold; }
+.info .oldPrice .lg{font-size: 20px;}
+.info .oldPrice{font-size: 16px;font-weight: bold; color: rgb(0, 0, 0.8); text-decoration: line-through;}
+.info .netPrice .lg{font-size: 16px;}
+.info .netPrice{font-size: 15px;font-weight: bold; }
 .badge-primary{background: #2bbef9; color: #ffffff;}
 
 
@@ -262,5 +274,11 @@ footer .topInfo .col h4{font-size: 18px; font-weight: 600; margin: 20px 0px;}
 
 .zoomSlider .swiper-slide .item{opacity: 0.5;}
 .zoomSlider .swiper-slide .item_active{opacity: 1 !important;}
+.quantityDrop{ width: 150px;  gap:10px;}
+.quantityDrop button{ min-width: 40px !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; background: #edeef5 !important; border: 1px solid rgba(0, 0, 0, 0.1) !important; color: #000; }
+.quantityDrop button svg{color: #000;}
 
+.quantityDrop input{width:30px; border:0px ; background:transparent; outline: none !important; text-align: center;}
+
+.actions button{color: #000 !important; border: 1px solid rgba(0, 0, 0, 0.1) !important;}
 /* Product zoom  end css */

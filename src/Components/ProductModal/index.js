@@ -6,8 +6,10 @@ import Rating from '@mui/material/Rating';
 import Slider from "react-slick";
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.min.css';
-import { Moving } from '@mui/icons-material';
-
+// import { Moving } from '@mui/icons-material';
+import QuantityBox from '../QuantityBox';
+import { IoIosHeartEmpty } from "react-icons/io";
+import { MdCompareArrows } from "react-icons/md";
 
 const ProductModal = (props) => {
 
@@ -101,7 +103,7 @@ const ProductModal = (props) => {
 
 
                                 </div>
-                                
+
 
                             </Slider>
 
@@ -112,30 +114,61 @@ const ProductModal = (props) => {
 
                             <div className="item">
 
-                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-150x150.jpg" alt="smallI" className='w-100' onClick={()=>goto(0)} />
+                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-150x150.jpg" alt="smallI" className='w-100' onClick={() => goto(0)} />
 
                             </div>
 
                             <div className="item">
 
-                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image2-47-768x691.jpg" alt="smallI" className='w-100'  onClick={()=>goto(1)} />
+                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image2-47-768x691.jpg" alt="smallI" className='w-100' onClick={() => goto(1)} />
 
                             </div>
 
                             <div className="item">
 
-                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image3-35-768x691.jpg" alt="smallI" className='w-100' onClick={()=>goto(2)} />
+                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image3-35-768x691.jpg" alt="smallI" className='w-100' onClick={() => goto(2)} />
 
                             </div>
 
-                            
+
 
                         </Slider>
 
 
                     </div>
 
-                    <div className="col-md-5">
+                    <div className="col-md-7">
+                        <div className="d-flex info align-item-center mb-3">
+                            <div className="oldPrice lg mr-2">250 rs</div>
+                            <div className="netPrice text-danger lg">150 rs</div>
+
+
+                        </div>
+
+                        <span className='badge bg-success'>In Stock </span>
+                        <p className='mt-3'> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime deleniti minima dolor, eligendi debitis inventore aperiam dignissimos
+                            delectus corporis accusamus nam quis
+                            eveniet commodi? Sit fuga repellendus
+                            aliquid quo nulla.</p>
+
+                        <div className="d-flex align-items-center">
+
+                            <QuantityBox />
+
+                            <Button className='btn-blue btn-lg btn-big btn-round ml-3'>Add to Cart</Button>
+
+
+
+                        </div>
+
+
+                        <div className="d-flex align-items-center mt-3 actions">
+                            <Button className='btn-round btn-small' variant='outlined'><IoIosHeartEmpty />&nbsp;Add to Wishlist</Button>
+                            <Button className='btn-round btn-small' variant='outlined'><MdCompareArrows />&nbsp;Compare </Button>
+
+                        </div>
+
+
 
 
                     </div>
