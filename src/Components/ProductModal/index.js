@@ -1,4 +1,4 @@
-import react, { useRef } from 'react';
+import react, { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import { IoCloseOutline } from "react-icons/io5";
@@ -10,42 +10,27 @@ import 'react-inner-image-zoom/lib/InnerImageZoom/styles.min.css';
 import QuantityBox from '../QuantityBox';
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdCompareArrows } from "react-icons/md";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
 
 const ProductModal = (props) => {
 
+    const [slideIndex, setSlideIndex] = useState(0);
     const zoomSliderBig = useRef();
     const zoomSlider = useRef();
 
 
-    var settings2 = {
-
-        dots: false,
-        infinite: false,
-        speed: 700,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        fade: false,
-        arrow: false,
-    };
-
-
-    var settings = {
-
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        fade: false,
-        arrow: true,
-    }
+   
 
 
     // goto function for slide Moving
 
     const goto = (index) => {
-        zoomSlider.current.slickGoTo(index);
-        zoomSliderBig.current.slickGoTo(index);
+        setSlideIndex(index);
+        zoomSlider.current.swiper.slideTo(index);
+        zoomSliderBig.current.swiper.slideTo(index);
     }
 
 
@@ -72,68 +57,124 @@ const ProductModal = (props) => {
                     <div className="col-md-5">
                         <div className="productZoom position-relative">
                             <div className="badge badge-primary"> 23%</div>
-                            <Slider {...settings2} className='zoomSliderBig' ref={zoomSliderBig}>
 
-                                <div className="item">
-                                    <InnerImageZoom
-                                        zoomType="hover"
-                                        zoomScale={1}
-                                        src={'https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'} />
-
-
-
-
-                                </div>
-                                <div className="item">
-                                    <InnerImageZoom
-                                        zoomType="hover"
-                                        zoomScale={1}
-                                        src={'https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image2-47-768x691.jpg'} />
-
-
-
-
-                                </div>
-                                <div className="item">
-                                    <InnerImageZoom
-                                        zoomType="hover"
-                                        zoomScale={1}
-                                        src={'https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image3-35-768x691.jpg'} />
+                            <Swiper
+                                slidesPerView={1}
+                                spaceBetween={0}
+                                navigation={false}
+                                slidesPerGroup={1}
+                                modules={[Navigation]}
+                                className="zoomSliderBig"
+                                ref={zoomSliderBig}
+                            >
+                                <SwiperSlide>
+                                    <div className="item">
+                                        <InnerImageZoom
+                                            zoomType="hover"
+                                            zoomScale={1}
+                                            src={'https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'} />
 
 
 
 
-                                </div>
+                                    </div>
+                                </SwiperSlide>
+
+                                <SwiperSlide>
+                                    <div className="item">
+                                        <InnerImageZoom
+                                            zoomType="hover"
+                                            zoomScale={1}
+                                            src={'https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'} />
 
 
-                            </Slider>
+
+
+                                    </div>
+                                </SwiperSlide>
+
+                                <SwiperSlide>
+                                    <div className="item">
+                                        <InnerImageZoom
+                                            zoomType="hover"
+                                            zoomScale={1}
+                                            src={'https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'} />
+
+
+
+
+                                    </div>
+                                </SwiperSlide>
+
+                                <SwiperSlide>
+                                    <div className="item">
+                                        <InnerImageZoom
+                                            zoomType="hover"
+                                            zoomScale={1}
+                                            src={'https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'} />
+
+
+
+
+                                    </div>
+                                </SwiperSlide>
+
+
+                            </Swiper>
 
                         </div>
 
                         {/* -----------------small image slider---------------- */}
-                        <Slider {...settings} className='zoomSlider' ref={zoomSlider}>
+                        <Swiper
+                                slidesPerView={4}
+                                spaceBetween={0}
+                                navigation={false}
+                                slidesPerGroup={1}
+                                modules={[Navigation]}
+                                className="zoomSlider"
+                                ref={zoomSlider}
+                            >
 
-                            <div className="item">
+                            <SwiperSlide>
+                                
+                                <div className={`item ${slideIndex===0 && 'item_active'}`}> 
 
-                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-150x150.jpg" alt="smallI" className='w-100' onClick={() => goto(0)} />
+                                    <img src='https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'className='w-100' onClick={() => goto(0)} />
+                                </div>
+                                  </SwiperSlide>
 
-                            </div>
+                                  
+                                  <SwiperSlide>
+                                
+                                <div className={`item ${slideIndex===1 && 'item_active'}`}> 
 
-                            <div className="item">
+                                    <img src='https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'className='w-100' onClick={() => goto(1)} />
+                                </div>
+                                  </SwiperSlide>
+                                  <SwiperSlide>
+                                
+                                <div className={`item ${slideIndex===2 && 'item_active'}`}> 
 
-                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image2-47-768x691.jpg" alt="smallI" className='w-100' onClick={() => goto(1)} />
+                                    <img src='https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'className='w-100' onClick={() => goto(2)} />
+                                </div>
+                                  </SwiperSlide>
+                                  <SwiperSlide>
+                                
+                                <div className={`item ${slideIndex===3 && 'item_active'}`}> 
 
-                            </div>
+                                    <img src='https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'className='w-100' onClick={() => goto(3)} />
+                                </div>
+                                  </SwiperSlide>
+                                  <SwiperSlide>
+                                
+                                <div className={`item ${slideIndex===4 && 'item_active'}`}> 
 
-                            <div className="item">
-
-                                <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image3-35-768x691.jpg" alt="smallI" className='w-100' onClick={() => goto(2)} />
-
-                            </div>
+                                    <img src='https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg'className='w-100' onClick={() => goto(4)} />
+                                </div>
+                                  </SwiperSlide>
 
 
-
-                        </Slider>
+                            </Swiper>
 
 
                     </div>
@@ -148,7 +189,7 @@ const ProductModal = (props) => {
 
                         <span className='badge bg-success'>In Stock </span>
                         <p className='mt-3'> Experience the rich flavors of India with our succulent chicken meatballs. Infused with authentic spices like cumin, coriander, and garam masala, these meatballs offer a delightful taste in every
-                             bite. Perfect as appetizers or in curries.</p>
+                            bite. Perfect as appetizers or in curries.</p>
 
                         <div className="d-flex align-items-center">
 
