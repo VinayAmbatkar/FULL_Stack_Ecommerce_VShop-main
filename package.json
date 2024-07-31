@@ -25,7 +25,8 @@
     "slick-slider": "^1.8.2",
     "styled-components": "^6.1.11",
     "swiper": "^11.1.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-range-slider-input": "^3.0.7"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -282,16 +282,22 @@ footer .topInfo .col h4{font-size: 18px; font-weight: 600; margin: 20px 0px;}
 
 .actions button{color: #000 !important; border: 1px solid rgba(0, 0, 0, 0.1) !important;}
 /* Product zoom  end css */
-.product_Listing_Page{padding: 35px 0px;}
+.product_Listing_Page{padding: 45px 0px;}
 .product_Listing_Page .productListing{ gap: 20px;}
 .product_Listing_Page .productListing .sidebar{ width: 20% !important; flex: 0 0 20% !important;}
 .product_Listing_Page .productListing .sidebar .filterBox h6{font-weight: 600; font-size: 14px; margin-bottom: 20px !important}
 .product_Listing_Page .productListing .sidebar .filterBox{margin-bottom:20px;}
 .product_Listing_Page .productListing .sidebar .scroll ul li{ list-style: none; margin-bottom:0px; width: 100%;}
 .product_Listing_Page .productListing .sidebar .scroll{padding-left:10px !important;max-height: 200px !important; overflow-y: scroll; overflow-x: hidden;}
-
+.product_Listing_Page .productListing .sidebar .scroll ul{margin-bottom: 0px !important;}
 .product_Listing_Page .productListing .sidebar .scroll::-webkit-scrollbar{width: 5px !important; height: 5px !important; }
 .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root{padding: 6px !important;}
 .css-ahj2mt-MuiTypography-root{font-size:13px !important;}
 .css-i4bv87-MuiSvgIcon-root{width: 20px !important; height: 20px !important;}
-.product_Listing_Page .productListing .content_right{width: 80%; flex: 0 0 80%;}
+.product_Listing_Page .productListing .content_right{width: 80%; flex: 0 0 80%; padding-left: 50px;}
+
+
+/* Price Slider */
+.range-slider .range-slider__thumb{width: 20px !important; height: 20px !important; border-radius: 50% !important; background: #2bbef9 !important; border: 1px solid #2bbef9 !important;}
+.range-slider .range-slider__thumb::after{content: '' !important; width: 10px !important; height: 10px !important; border-radius: 50% !important; background: #fff !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important;}
+.range-slider{ height: 5px !important;}
