@@ -301,3 +301,14 @@ footer .topInfo .col h4{font-size: 18px; font-weight: 600; margin: 20px 0px;}
 .range-slider .range-slider__thumb{width: 20px !important; height: 20px !important; border-radius: 50% !important; background: #2bbef9 !important; border: 1px solid #2bbef9 !important;}
 .range-slider .range-slider__thumb::after{content: '' !important; width: 10px !important; height: 10px !important; border-radius: 50% !important; background: #fff !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important;}
 .range-slider{ height: 5px !important;}
+.product_Listing_Page .productListing .content_right .showBy{ width: 100%; height: auto; background: #f7f8fd; padding: 15px 25px;}
+
+
+
+
+
+
+
+
+.product_Listing_Page .productListing .content_right .showBy .btnWrapper button{ min-width: 30px !important; height: 30px !important; border-radius:50% !important ; color: #000;}
+.product_Listing_Page .productListing .content_right .showBy .btnWrapper button svg{color: #000 !important;}
