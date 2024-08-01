@@ -8,7 +8,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import ProductModal from '../ProductModal';
 
 
-const ProductsItem = () => {
+const ProductsItem = (props) => {
 
 const [isOpenProductModal, setIsOpenProductModal] = React.useState(false);
   const viewProductDetails = (id) => {
@@ -27,7 +27,7 @@ const closeProductModal=() =>{
    <>
     
 
-<div className=" item productItem">
+<div className={`productItem ${props.itemView}`}>
   <div className="imageWrapper">
     <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg" className='w-100' />
 
