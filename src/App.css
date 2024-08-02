@@ -285,6 +285,7 @@ footer .topInfo .col h4{font-size: 18px; font-weight: 600; margin: 20px 0px;}
 .product_Listing_Page{padding: 45px 0px;}
 .product_Listing_Page .productListing{ gap: 20px;}
 .product_Listing_Page .productListing .sidebar{ width: 20% !important; flex: 0 0 20% !important;}
+.product_Listing_Page .productListing .sidebar.sticky{position: sticky; top: 50px; z-index: 100;}
 .product_Listing_Page .productListing .sidebar .filterBox h6{font-weight: 600; font-size: 14px; margin-bottom: 20px !important}
 .product_Listing_Page .productListing .sidebar .filterBox{margin-bottom:20px;}
 .product_Listing_Page .productListing .sidebar .scroll ul li{ list-style: none; margin-bottom:0px; width: 100%;}

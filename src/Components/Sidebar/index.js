@@ -16,6 +16,7 @@ const Sidebar = () => {
     return (
         <>
             <div className="sidebar">
+                <div className="sticky">
 {/* Product Catagories */}
                 <div className="filterBox">
                     <h6>PRODUCT CATEGORIES</h6>
@@ -112,7 +113,7 @@ const Sidebar = () => {
                 </div>
             </div>
 
-
+            </div>
 
 
 

@@ -9,6 +9,8 @@ import { FaAngleDown } from "react-icons/fa6";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ProductsItem from '../../Components/ProductsItems';
+import Pagination from '@mui/material/Pagination';
+
 
 
 const Listing = () => {
@@ -42,12 +44,12 @@ const Listing = () => {
 
                             <div className="showBy mt-3 mb-3 d-flex align-items-center">
                                 <div className=" d-flex align-items-center btnWrapper">
-                                    <Button onClick={() => setProductView('four')}><PiDotsSixBold /></Button>
-                                    <Button onClick={() => setProductView('three')}><CgMenuGridR /></Button>
-                                    <Button onClick={() => setProductView('two')}><HiViewGrid /></Button>
-                                    <Button onClick={() => setProductView('one')}><CiMenuBurger /></Button>
+                                    <Button className={productView === 'four' && 'act'} onClick={() => setProductView('four')}><PiDotsSixBold /></Button>
+                                    <Button className={productView === 'three' && 'act'} onClick={() => setProductView('three')}><CgMenuGridR /></Button>
+                                    <Button className={productView === 'two' && 'act'} onClick={() => setProductView('two')}><HiViewGrid /></Button>
+                                    <Button className={productView === 'one' && 'act'} onClick={() => setProductView('one')}><CiMenuBurger /></Button>
 
-                                    
+
 
 
                                 </div>
@@ -100,6 +102,15 @@ const Listing = () => {
 
 
                             </div>
+
+                            {/* Pagination */}
+
+                            <div className="d-flex align-items-center justify-content-center mt-3">
+                                <Pagination count={10} color="primary" size="large" />
+                            </div>
+
+
+
                         </div>
 
                     </div>
