@@ -1,5 +1,5 @@
 import React from 'react'
-import FormGroup from '@mui/material/FormGroup';
+// import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox'
 import RangeSlider from 'react-range-slider-input';
@@ -11,7 +11,7 @@ import slideBanner2 from '../../assets/images/Banners/bottomBanner.gif';
 const Sidebar = () => {
 
     const [value, setValue] = useState([0, 1000]);
-    const [value2, setValue2] = useState(0);
+    // const [value2, setValue2] = useState(0);
 
     return (
         <>
