@@ -267,7 +267,7 @@ footer .topInfo .col h4{font-size: 18px; font-weight: 600; margin: 20px 0px;}
 .zoomSlider{padding-top: 30px;}
 .zoomSlider *{outline: none !important;}
 .zoomSlider .item{border: 2px solid transparent !important; overflow: hidden; border-radius: 8px; cursor: pointer; height: 70px !important;}
-.zoomSlider .item_active{border: 2px solid rgba(0,0,0,0.3) !important; }
+.zoomSlider .item_active{border: 1px solid rgba(0,0,0,0.3) !important; }
 .zoomSlider .item img{height: 100%; object-fit: cover;}
 .zoomSlider .swiper-button-prev{width: 30px !important; height: 30px !important; top: 60% !important; left: -3% !important;}
 .zoomSlider .swiper-button-next{width: 30px !important; height: 30px !important; top: 60% !important; right: -3% !important;}
@@ -326,4 +326,8 @@ color: #000;}
 .productListing .productItem.one{width:100%; overflow-x: hidden; display: flex; align-items: center;}
 .productListing .productItem.one .imageWrapper{width:30% !important;}
 
+
+/* Product details */
+.section{padding: 45px 0px;}
+.productDetails .hd{font-size: 25px !important;}
 

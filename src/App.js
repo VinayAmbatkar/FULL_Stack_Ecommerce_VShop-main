@@ -5,6 +5,7 @@ import Home from './Pages/Home';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Listing from './Pages/Listing';
+import ProductDetails from "./Pages/Listing/ProductDetails";
 
 
 
@@ -20,6 +21,7 @@ function App() {
 {/* what is the difference between BrowserRouter and Router in react-router-dom? */}
  {/* what exact and id used for */}
 <Route path="/cat/:id" exact={true} element={<Listing />} />
+<Route exact={true} path="product/:id" element={<ProductDetails/>} />
 </Routes>
 <Footer />
 </BrowserRouter>
