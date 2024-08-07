@@ -81,7 +81,7 @@ const footer = () => {
     <li><Link to="#">Spy Cameras</Link></li>
     <li><Link to="#">Keyboard</Link></li>
     <li><Link to="#">Laptop Bags</Link></li>
-    <li><Link to="#">Mouse</Link></li>
+  
     
   </ul>
 </div>

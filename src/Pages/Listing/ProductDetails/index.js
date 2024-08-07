@@ -7,6 +7,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { MdOutlineCompareArrows } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
 import Tooltip from '@mui/material/Tooltip';
+import RelatedProducts from './RelatedProducts';
 
 const ProductDetails = () => {
 
@@ -87,226 +88,228 @@ const ProductDetails = () => {
 
 
           {/* //comment section and Review section */}
-           <br />
-           <div className='card mt-5 p-5 detailsPageTabs'>
-                        <div className='customTabs'>
-                            <ul className='list list-inline'>
-                                <li className='list-inline-item'>
-                                    <Button className={`${activeTabs === 0 && 'active'}`}
-                                        onClick={() => {
-                                            setActiveTabs(0)
-                                        }}
-                                    >Description</Button>
-                                </li>
-                                <li className='list-inline-item'>
-                                    <Button className={`${activeTabs === 1 && 'active'}`}
-                                        onClick={() => {
-                                            setActiveTabs(1)
+          <br />
+          <div className='card mt-5 p-5 detailsPageTabs'>
+            <div className='customTabs'>
+              <ul className='list list-inline'>
+                <li className='list-inline-item'>
+                  <Button className={`${activeTabs === 0 && 'active'}`}
+                    onClick={() => {
+                      setActiveTabs(0)
+                    }}
+                  >Description</Button>
+                </li>
+                <li className='list-inline-item'>
+                  <Button className={`${activeTabs === 1 && 'active'}`}
+                    onClick={() => {
+                      setActiveTabs(1)
 
-                                        }}
-                                    >Additional info</Button>
-                                </li>
-                                <li className='list-inline-item'>
-                                    <Button className={`${activeTabs === 2 && 'active'}`}
-                                        onClick={() => {
-                                            setActiveTabs(2)
+                    }}
+                  >Additional info</Button>
+                </li>
+                <li className='list-inline-item'>
+                  <Button className={`${activeTabs === 2 && 'active'}`}
+                    onClick={() => {
+                      setActiveTabs(2)
 
-                                        }}
-                                    >Reviews</Button>
-                                </li>
+                    }}
+                  >Reviews</Button>
+                </li>
 
-                            </ul>
-
-
-                            <br />
-
-                            {
-                                activeTabs === 0 &&
-                                <div className='tabContent'>
-                                    <h3>Product Description</h3>
-                                </div>
-
-                            }
+              </ul>
 
 
-                            {
-                                activeTabs === 1 &&
+              <br />
 
-                                <div className='tabContent'>
-                                    <div className='table-responsive'>
-                                        <table className='table table-bordered'>
-                                            <tbody>
-                                                <tr className="stand-up">
-                                                    <th>Stand Up</th>
-                                                    <td>
-                                                        <p>35″L x 24″W x 37-45″H(front to back wheel)</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="folded-wo-wheels">
-                                                    <th>Folded (w/o wheels)</th>
-                                                    <td>
-                                                        <p>32.5″L x 18.5″W x 16.5″H</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="folded-w-wheels">
-                                                    <th>Folded (w/ wheels)</th>
-                                                    <td>
-                                                        <p>32.5″L x 24″W x 18.5″H</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="door-pass-through">
-                                                    <th>Door Pass Through</th>
-                                                    <td>
-                                                        <p>24</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="frame">
-                                                    <th>Frame</th>
-                                                    <td>
-                                                        <p>Aluminum</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="weight-wo-wheels">
-                                                    <th>Weight (w/o wheels)</th>
-                                                    <td>
-                                                        <p>20 LBS</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="weight-capacity">
-                                                    <th>Weight Capacity</th>
-                                                    <td>
-                                                        <p>60 LBS</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="width">
-                                                    <th>Width</th>
-                                                    <td>
-                                                        <p>24″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="handle-height-ground-to-handle">
-                                                    <th>Handle height (ground to handle)</th>
-                                                    <td>
-                                                        <p>37-45″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="wheels">
-                                                    <th>Wheels</th>
-                                                    <td>
-                                                        <p>12″ air / wide track slick tread</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="seat-back-height">
-                                                    <th>Seat back height</th>
-                                                    <td>
-                                                        <p>21.5″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="head-room-inside-canopy">
-                                                    <th>Head room (inside canopy)</th>
-                                                    <td>
-                                                        <p>25″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="pa_color">
-                                                    <th>Color</th>
-                                                    <td>
-                                                        <p>Black, Blue, Red, White</p>
-                                                    </td>
-                                                </tr>
-                                                <tr className="pa_size">
-                                                    <th>Size</th>
-                                                    <td>
-                                                        <p>M, S</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+              {
+                activeTabs === 0 &&
+                <div className='tabContent'>
+                  <h3>All Natural Italian-Style Chicken Meatballs</h3>
+                  <p>Experience the rich flavors of India with our succulent chicken meatballs. Infused with authentic spices like cumin, coriander, and garam masala, these meatballs offer a delightful taste in every bite. Perfect as appetizers or in curries.</p>
+                </div>
 
-                            }
+              }
 
 
+              {
+                activeTabs === 1 &&
 
-                            {
-                                activeTabs === 2 &&
+                <div className='tabContent'>
+                  <div className='table-responsive'>
+                    <table className='table table-bordered'>
+                      <tbody>
+                        <tr className="stand-up">
+                          <th>Stand Up</th>
+                          <td>
+                            <p>35″L x 24″W x 37-45″H(front to back wheel)</p>
+                          </td>
+                        </tr>
+                        <tr className="folded-wo-wheels">
+                          <th>Folded (w/o wheels)</th>
+                          <td>
+                            <p>32.5″L x 18.5″W x 16.5″H</p>
+                          </td>
+                        </tr>
+                        <tr className="folded-w-wheels">
+                          <th>Folded (w/ wheels)</th>
+                          <td>
+                            <p>32.5″L x 24″W x 18.5″H</p>
+                          </td>
+                        </tr>
+                        <tr className="door-pass-through">
+                          <th>Door Pass Through</th>
+                          <td>
+                            <p>24</p>
+                          </td>
+                        </tr>
+                        <tr className="frame">
+                          <th>Frame</th>
+                          <td>
+                            <p>Aluminum</p>
+                          </td>
+                        </tr>
+                        <tr className="weight-wo-wheels">
+                          <th>Weight (w/o wheels)</th>
+                          <td>
+                            <p>20 LBS</p>
+                          </td>
+                        </tr>
+                        <tr className="weight-capacity">
+                          <th>Weight Capacity</th>
+                          <td>
+                            <p>60 LBS</p>
+                          </td>
+                        </tr>
+                        <tr className="width">
+                          <th>Width</th>
+                          <td>
+                            <p>24″</p>
+                          </td>
+                        </tr>
+                        <tr className="handle-height-ground-to-handle">
+                          <th>Handle height (ground to handle)</th>
+                          <td>
+                            <p>37-45″</p>
+                          </td>
+                        </tr>
+                        <tr className="wheels">
+                          <th>Wheels</th>
+                          <td>
+                            <p>12″ air / wide track slick tread</p>
+                          </td>
+                        </tr>
+                        <tr className="seat-back-height">
+                          <th>Seat back height</th>
+                          <td>
+                            <p>21.5″</p>
+                          </td>
+                        </tr>
+                        <tr className="head-room-inside-canopy">
+                          <th>Head room (inside canopy)</th>
+                          <td>
+                            <p>25″</p>
+                          </td>
+                        </tr>
+                        <tr className="pa_color">
+                          <th>Color</th>
+                          <td>
+                            <p>Black, Blue, Red, White</p>
+                          </td>
+                        </tr>
+                        <tr className="pa_size">
+                          <th>Size</th>
+                          <td>
+                            <p>M, S</p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-                                <div className='tabContent'>
-                                    <div className='row'>
-                                        <div className='col-md-8'>
-                                            <h3>Customer questions & answers</h3>
-                                            <br />
+              }
 
 
 
-                                            <div className='reviewBox mb-4 border-bottom'>
+              {
+                activeTabs === 2 &&
 
-                                                            <div className='info'>
-                                                                <div className='d-flex align-items-center w-100'>
-                                                                    <h5>Vinay Ambatkar</h5>
-
-                                                                    <div className='ml-auto'>
-                                                                        <Rating name="half-rating-read"
-                                                                            value={3} readOnly size="small" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <h6 className='text-light'>01/09/2024</h6>
-
-                                                                <p>its a review</p>
-                                                            </div>
-
-                                                        </div>
+                <div className='tabContent'>
+                  <div className='row'>
+                    <div className='col-md-8'>
+                      <h3>Customer questions & answers</h3>
+                      <br />
 
 
 
-                                            <br className='res-hide' />
+                      <div className='reviewBox mb-4 border-bottom'>
 
+                        <div className='info'>
+                          <div className='d-flex align-items-center w-100'>
+                            <h5>Vinay Ambatkar</h5>
 
-                                            <form className='reviewForm'>
+                            <div className='ml-auto'>
+                              <Rating name="half-rating-read"
+                                value={3} readOnly size="small" />
+                            </div>
+                          </div>
 
-                                                <h4>Add a review</h4>
-                                                <div className='form-group'>
-                                                    <textarea className='form-control shadow' placeholder='Write a Review'
-                                                        name='review'></textarea>
-                                                </div>
+                          <h6 className='text-light'>01/09/2024</h6>
 
-                                                <div className='row'>
+                          <p>its a review</p>
+                        </div>
 
-                                                    <div className='col-md-6'>
-                                                        <div className='form-group'>
-                                                            <Rating name="rating" value={5} precision={0.5}/>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-
-                                                <br />
-                                                <div className='form-group'>
-                                                    <Button className='btn-blue btn-lg btn-big btn-round'>Submit Review</Button>
-                 
-                                                </div>
-
-                                            </form>
-
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            }
+                      </div>
 
 
 
+                      <br className='res-hide' />
+
+
+                      <form className='reviewForm'>
+
+                        <h4>Add a review</h4>
+                        <div className='form-group'>
+                          <textarea className='form-control shadow' placeholder='Write a Review'
+                            name='review'></textarea>
+                        </div>
+
+                        <div className='row'>
+
+                          <div className='col-md-6'>
+                            <div className='form-group'>
+                              <Rating name="rating" value={5} precision={0.5} />
+                            </div>
+                          </div>
 
                         </div>
+
+
+                        <br />
+                        <div className='form-group'>
+                          <Button className='btn-blue btn-lg btn-big btn-round'>Submit Review</Button>
+
+                        </div>
+
+                      </form>
+
                     </div>
 
-           <br />
-       
 
+                  </div>
+                </div>
+              }
+
+
+
+
+            </div>
+          </div>
+
+          <br />
+          {/* Related Products Section */}
+          <RelatedProducts title='Related Products' />
+          <RelatedProducts title='Recent View Products' />
         </div>
       </section>
     </>

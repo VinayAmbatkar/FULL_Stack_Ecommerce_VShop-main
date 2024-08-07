@@ -43,7 +43,7 @@ const closeProductModal=() =>{
   <div className="info">
 
     <h4>Fresh Brown Coconut</h4>
-    <span className='text-susses d-block'>In Stock</span>
+    <span className='text-success d-block'>In Stock</span>
     <Rating className='mt-2 mb-2 ' name="read-only" value={5} readOnly size='small' precision={0.5} />
 
     <div className="d-flex">

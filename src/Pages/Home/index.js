@@ -106,7 +106,7 @@ const Home = () => {
 
 
 
-                            {/* Best-seller section */}
+                            {/* New Product  section */}
 
                             <div className="d-flex align-items-center mt-5">
                                 <div className="info">
