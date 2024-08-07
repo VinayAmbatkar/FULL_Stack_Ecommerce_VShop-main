@@ -45,13 +45,7 @@ const HomeCat = () => {
                             </div>
 
                         </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://res.cloudinary.com/dvyozjjma/image/upload/v1720424156/1720424155080_jw.png" alt="headphone's" />
-                                <h6 className='mt-2'>Jewellery</h6>
-                            </div>
-
-                        </SwiperSlide>
+                        
                         <SwiperSlide>
                             <div className="item text-center">
                                 <img src="https://cdn-icons-png.flaticon.com/512/10605/10605926.png" alt="headphone's" />
