@@ -16,11 +16,13 @@ const MyContext = createContext();
 function App() {
   //  Hiding Header and Footer
   const [IsHeaderFooterShow, setIsHeaderFooterShow] = useState(true);
-
+const[isLogin,setIsLogin]=useState(false);
 
   const values = {
     IsHeaderFooterShow,
-    setIsHeaderFooterShow
+    setIsHeaderFooterShow,
+    setIsLogin,
+    isLogin
   }
 
   return (

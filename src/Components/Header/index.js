@@ -6,7 +6,9 @@ import { BsCart } from "react-icons/bs";
 // import { Search } from "@mui/icons-material";
 import Searchbox from "./SearchBox";
 import Navigation from "./Navigation";
-import { Button } from "@mui/material/Button";
+import { Button } from "@mui/material";
+import { MyContext } from "../../App";
+
 
 
 const Header = () => {
@@ -35,10 +37,15 @@ const Header = () => {
                 <Searchbox />
                 {/* Heder Serach EndHere */}
                 <div className="part3 d-flex align-items-center ml-auto">
+                 <Button className="btn-blue btn-lg btn-big btn-round mr-3">Sign In</Button>
+                 {
 
+                 MyContext.isLogin === true ? <Button  className="btn-blue btn-lg btn-big btn-round mr-3">Sign</Button> :
                   <button className="circle mr-3">
-                    <FaRegUser />
-                  </button>
+                 <FaRegUser />
+                 </button>
+                 }
+                  
                   <div className="ml-auto cartTab d-flex align-items-center">
                     <span className="price">$ 1000</span>
                     <div className="position-relative ml-2">
