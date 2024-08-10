@@ -1,4 +1,3 @@
-
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import { IoCloseOutline } from "react-icons/io5";
@@ -8,6 +7,7 @@ import QuantityBox from '../QuantityBox';
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdCompareArrows } from "react-icons/md";
 import ProductZoom from '../ProductZoom';
+import { FaCartPlus } from "react-icons/fa6";
 
 
 
@@ -59,7 +59,7 @@ const ProductModal = (props) => {
 
                             <QuantityBox />
 
-                            <Button className='btn-blue btn-lg btn-big btn-round ml-3'>Add to Cart</Button>
+                            <Button className='btn-blue btn-lg btn-big btn-round ml-3'><FaCartPlus />&nbsp;Add to Cart</Button>
 
 
 
