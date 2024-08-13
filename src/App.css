@@ -1593,7 +1593,7 @@ a:hover {
   width: 100%;
   top: 0;
   left: 0;
-  background-image: linear-gradient(#46277e, #583991);
+  background-image: linear-gradient(#ffffff, #83f9eb);
   opacity: 0.9;
   z-index: -1;
 }
@@ -1612,7 +1612,7 @@ a:hover {
   bottom: -2px;
   width: 0;
   height: 1px;
-  background-color: #102a44;
+  background-color: #fff;
   content: "";
   -webkit-transition: .2s;
   -moz-transition: .2s;

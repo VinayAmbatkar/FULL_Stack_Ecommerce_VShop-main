@@ -16,44 +16,46 @@ const MyContext = createContext();
 function App() {
   //  Hiding Header and Footer
   const [IsHeaderFooterShow, setIsHeaderFooterShow] = useState(true);
-const[isLogin,setIsLogin]=useState(false);
+  //hinding sign in button when user is login                       
+  const [isLogin, setIsLogin] = useState(false);
 
   const values = {
     IsHeaderFooterShow,
     setIsHeaderFooterShow,
-    setIsLogin,
-    isLogin
+    isLogin,
+    setIsLogin
+    
   }
 
   return (
-    
-      <BrowserRouter>
-        <MyContext.Provider value={values}>
-          {
-            IsHeaderFooterShow === true && <Header />
-          }
 
-          <Routes>
-            <Route path="/" element={<Home />} />
+    <BrowserRouter>
+      <MyContext.Provider value={values}>
+        {
+          IsHeaderFooterShow === true && <Header />
+        }
 
-            {/* what is the difference between BrowserRouter and Router in react-router-dom? */}
-            {/* what exact and id used for */}
-            <Route path="/cat/:id" exact={true} element={<Listing />} />
-            <Route exact={true} path="product/:id" element={<ProductDetails />} />
-            <Route exact={true} path="/cart" element={<Cart />} />
-            <Route exact={true} path="/sigIn" element={<SignIn />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-
-          </Routes>
-          {
-            IsHeaderFooterShow === true && <Footer />
-          }
-         
-        </MyContext.Provider>
-      </BrowserRouter>
+          {/* what is the difference between BrowserRouter and Router in react-router-dom? */}
+          {/* what exact and id used for */}
+          <Route path="/cat/:id" exact={true} element={<Listing />} />
+          <Route exact={true} path="product/:id" element={<ProductDetails />} />
+          <Route exact={true} path="/cart" element={<Cart />} />
+          <Route exact={true} path="/sigIn" element={<SignIn />} />
 
 
-    
+        </Routes>
+        {
+          IsHeaderFooterShow === true && <Footer />
+        }
+
+      </MyContext.Provider>
+    </BrowserRouter>
+
+
+
 
 
   );
