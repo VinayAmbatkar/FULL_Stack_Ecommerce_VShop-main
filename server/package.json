@@ -1,0 +1,22 @@
+{
+  "name": "vshopserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vinay Ambatkar",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.3",
+    "nodemon": "^3.1.4",
+    "p-limit": "^3.1.0",
+    "cloudinary":"^2.2.0"
+  }
+}
