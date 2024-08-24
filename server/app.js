@@ -18,8 +18,10 @@ app.use(bodyParser.json());
 //Routes
 
 const categoriesRoutes = require('./Routes/categories');
+const productsRoutes = require('./Routes/products');
 
 app.use(`/api/category`, categoriesRoutes);
+app.use(`/api/products`, productsRoutes);
 
 //DATABASE
 

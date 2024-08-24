@@ -32,9 +32,9 @@ categorySchema.set('toJSON', {
 
 
 
+const Category = mongoose.model('Category', categorySchema);
 
-exports.category = mongoose.model('Category', categorySchema);
-exports.categorySchema = categorySchema;
-
+// Correct the export to use `Category`
+module.exports = { Category, categorySchema };
 
 

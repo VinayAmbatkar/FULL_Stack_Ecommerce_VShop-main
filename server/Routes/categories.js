@@ -11,7 +11,7 @@ cloudinary.config({
     api_secret: process.env.cloudinary_Config_api_secret,
 });
 
-// Function to upload images to Cloudinary with a concurrency limit
+// Function to upload images to cloudinary with a concurrency limit
 const uploadImages = async (images) => {
     const limit = pLimit(2);
     const imagesToUpload = images.map((image) => {
@@ -107,7 +107,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// Route to update category by ID
+// Route to update category by ID put request
 router.put('/:id', async (req, res) => {
     try {
         const imgurl = await uploadImages(req.body.images);
