@@ -7,6 +7,28 @@ body {
   background-color: #aaaaaa;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background: #ccc !important;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0858f7;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.btn-blue{
+  background:#0149da7d !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
 header {
   background-color: #fff;
   color: white;
@@ -35,6 +57,13 @@ header button.rounded-circle {
 
 header button.rounded-circle svg {
   color: black;
+
+
+}
+
+header button.rounded-circle:hover svg {
+  color: #085ef0 !important;
+  transition: all 0.2s ease-in-out;
 
 }
 
@@ -67,33 +96,118 @@ header button.rounded-circle svg {
   color: #292929;
 }
 
-.myAcc .userImg .rounded-circle {
+.userImg .rounded-circle {
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-.myAcc .userImg .rounded-circle img{
+.rounded-circle img {
   width: 100%;
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.myAcc .userInfo{
-padding-left: 15px;
+.myAcc .userInfo {
+  padding-left: 15px;
 }
-.myAcc .userInfo h4{
+
+.myAcc .userInfo h4 {
   font-size: 16px;
   font-weight: 600;
   color: #292929;
   margin-bottom: 0px;
   text-transform: capitalize
 }
-.myAcc .userInfo p{
+
+.myAcc .userInfo p {
   font-size: 14px;
   color: #292929;
   margin-bottom: 0px;
   opacity: 0.7;
+}
+
+
+#notification-menu .MuiPaper-elevation {
+  width: 300px !important;
+  right: 240px !important;
+  left: auto !important;
+}
+
+.dropdown_list .head h4 {
+  font-size: 17px;
+  align-items: center;
+
+}
+
+.dropdown_list .head {
+  padding: 10px 0px;
+
+}
+
+.dropdown_list .scroll {
+  max-height: 300px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+
+.dropdown_list li .MuiButtonBase-root {
+  background: #ebf6ff !important;
+
+}
+
+
+
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
+  min-height: auto !important;
+  background: #ebf6ff !important;
+  color: black !important;
+  padding: 10px 15px !important;
+}
+
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root:hover{
+  background: #c2e1fa !important;
+}
+
+
+.notifications.dropdown_list {
+  font-size: 20px !important;
+  font-weight: 600;
+
+}
+
+.dropdownInfo {
+  padding-left: 15px;
+
+}
+
+.dropdownInfo h4 {
+
+  font-size: 13px;
+  font-weight: 500;
+  white-space: break-spaces;
+  line-height: 21px;
+  margin-bottom: 0px;
+
+
+
+
+}
+
+.dropdownInfo {
+  font-weight: 500 !important;
+  margin-right: 5px;
+}
+
+.dropdownInfo p {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 0px;
+}
+
+.text-sky {
+  color: #0858f7 !important;
 }
