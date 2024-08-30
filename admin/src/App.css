@@ -4,7 +4,7 @@ body {
   font-family: "Open Sans", sans-serif;
   margin: 0px;
   padding: 0px;
-  background-color: #aaaaaa;
+  background-color: #fffefe !important;
 }
 
 ::-webkit-scrollbar {
@@ -27,6 +27,8 @@ body {
   font-size: 14px !important;
   font-weight: 600 !important;
   color: white !important;
+  text-transform: capitalize !important;
+  border-radius: 5px !important;
 }
 
 header {
@@ -34,6 +36,10 @@ header {
   color: white;
   height: 75px;
   width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
 
 
 }
@@ -211,3 +217,206 @@ header button.rounded-circle:hover svg {
 .text-sky {
   color: #0858f7 !important;
 }
+
+
+.main .sidebarWrapper {
+ width: 20%;
+ flex: 0 0 30%;
+ transition: all 0.3s ease-in-out;
+
+}
+
+.main .sidebarWrapper .sidebar{
+  width: 20%;
+  height: 100vh;
+ max-height: 100vh; /* to make the scroll fix higth */
+  background-color: #fff;
+  position: fixed;
+  top: 70px;
+  left: 0px;
+  overflow: scroll; /* for scroll */
+  overflow-x: hidden; /* for scroll */
+  padding-bottom: 40px !important ;
+
+
+}
+
+
+.main .sidebarWrapper .sidebar::-webkit-scrollbar-thumb {
+  background:transparent !important;
+}
+.main .sidebarWrapper:hover .sidebar::-webkit-scrollbar {
+  background: #0858f7 !important;
+
+}
+.main .sidebarWrapper .sidebar ul{
+  margin-bottom: 0px;
+  padding: 10px 15px;
+}
+.main .sidebarWrapper .sidebar ul li{
+  list-style: none;
+  /* padding: 15px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer; */
+}
+.main .sidebarWrapper .sidebar ul li button{
+  background: transparent;
+  border: none;
+  width: 100%;
+  padding: 15px 20px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #292929;
+  justify-content: left;
+  border-radius: 10px !important;
+  align-items: center;
+ text-transform: capitalize;
+ font-size: 15px !important;
+}
+
+
+
+
+
+.main .sidebarWrapper .sidebar ul li button .icon{
+ display: flex;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+.main .sidebarWrapper .sidebar ul li button .icon svg{
+  font-size: 20px;
+  color: #292929;
+  opacity: 0.8;
+
+}
+
+.main .sidebarWrapper .sidebar ul li button .arrow{
+  margin-left: auto !important;
+  display: flex;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  transition: all 0.3s ease-in-out;
+
+}
+.main .sidebarWrapper .sidebar ul li button:hover{
+  background: #f5f5f5;
+  transition: all 0.2s ease-in-out;
+}
+
+.main .sidebarWrapper .sidebar ul li button.active{
+  background: #f5f5f5;
+  color: #0858f7;
+  transition: all 0.2s ease-in-out;
+}
+
+
+.main .sidebarWrapper .sidebar ul li button.active .arrow{
+ transform: rotate(90deg);
+}
+
+
+.main .sidebarWrapper .sidebar ul li button *{
+  color: rgba(0, 0, 0, 0.7) !important;
+  
+}
+
+.main .sidebarWrapper .sidebar ul .submenu li{
+  width: 100%;
+  padding-left: 20px;
+  text-decoration: none;
+  padding-left:25px;
+  border-left:1px solid rgba(0, 0, 0, 0.1);
+}
+
+.main .sidebarWrapper .sidebar ul .submenu{
+  padding-left: 25px;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+.main .sidebarWrapper .sidebar ul .submenu::before{
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 25px;
+  width: 1px;
+  height: 95%;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+
+.main .sidebarWrapper .sidebar ul .submenu li a{
+  color: #292929;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 6px 0px;
+  display: block;
+  /* text-align: left; */
+  text-transform: capitalize;
+  transition: all 0.2s ease-in-out;
+}
+.main .sidebarWrapper .sidebar ul .submenu li a:hover{
+  background: #f5f5f5;
+  color: #0858f7;
+  transition: all 0.2s ease-in-out;
+}
+.main .sidebarWrapper .sidebar ul .submenuWrapper{transition: all 0.3s ease-in-out;}
+.main .sidebarWrapper .sidebar ul .submenuWrapper .colapsed{
+height: 0px;
+
+}
+.main .sidebarWrapper .sidebar ul .submenuWrapper .collapsed .submenu{
+  /* display: none; */
+  opacity: 0;
+
+}
+
+.main .sidebarWrapper .sidebar ul .submenuWrapper .collapse{
+  height:auto;
+  
+  }
+  .main .sidebarWrapper .sidebar ul .submenuWrapper .collapse.submenu{
+    /* display: none; */
+    opacity: 1;
+  
+  }
+
+  
+  .logoutWrapper {
+    padding: 0px 25px;
+
+  }
+
+  .logoutWrapper .logoutBox{
+  
+    width: 100%;
+    height: 100px;
+  padding: 23px;
+    background: #fff;
+    border-top: 1px solid #743d3d;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .logoutWrapper .logoutBox button{
+    background: #f5f5f5;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #292929;
+    cursor: pointer;
+    text-transform: capitalize;
+
+  }
