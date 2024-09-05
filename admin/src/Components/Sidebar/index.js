@@ -1,118 +1,165 @@
 import Button from '@mui/material/Button';
-import React from 'react';
-import { MdDashboardCustomize, MdOutlineProductionQuantityLimits } from "react-icons/md";
-import { IoIosArrowForward } from "react-icons/io";
-import { BsCartPlusFill, BsBellFill } from "react-icons/bs";
-import { BiSolidMessage } from "react-icons/bi";
+import { MdDashboard } from "react-icons/md";
+import { FaAngleRight } from "react-icons/fa6";
+import { FaProductHunt } from "react-icons/fa";
+import { FaCartArrowDown } from "react-icons/fa6";
+import { MdMessage } from "react-icons/md";
+import { FaBell } from "react-icons/fa6";
+import { IoIosSettings } from "react-icons/io";
 import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { IoMdLogOut } from "react-icons/io";
+import { MyContext } from '../../App';
+import { FaUser } from "react-icons/fa";
+
+
 
 const Sidebar = () => {
-    const [activeTab, setActiveTab] = React.useState(null);
-    const [submenus, setSubmenus] = React.useState({
-        1: false, // Products submenu
-        // You can add more submenus if needed
-    });
 
-    const toggleSubmenu = (index) => {
-        setSubmenus(prev => ({
-            ...prev,
-            [index]: !prev[index]
-        }));
-    };
+    const [activeTab, setActiveTab] = useState(0);
+    const [isToggleSubmenu, setIsToggleSubmenu] = useState(false);
 
-    const handleTabClick = (index) => {
-        if (activeTab === index) {
-            toggleSubmenu(index);
-        } else {
-            setActiveTab(index);
-            setSubmenus(prev => ({
-                ...prev,
-                [index]: true
-            }));
-        }
-    };
+    const context = useContext(MyContext);
+
+    const isOpenSubmenu = (index) => {
+        setActiveTab(index);
+        setIsToggleSubmenu(!isToggleSubmenu)
+    }
+
 
     return (
-        <div>
+        <>
             <div className="sidebar">
                 <ul>
                     <li>
                         <Link to="/">
-                            <Button 
-                                className={`w-100 ${activeTab === 0 ? 'active' : ''}`} 
-                                onClick={() => handleTabClick(0)}
-                            >
-                                <span className='icon'><MdDashboardCustomize /></span>
+                            <Button className={`w-100 ${activeTab === 0 ? 'active' : ''}`} onClick={() => isOpenSubmenu(0)}>
+                                <span className='icon'><MdDashboard /></span>
                                 Dashboard
-                                <span className='arrow'><IoIosArrowForward /></span>
+                              
                             </Button>
                         </Link>
                     </li>
                     <li>
-                        <Button 
-                            className={`w-100 ${activeTab === 1 ? 'active' : ''}`} 
-                            onClick={() => handleTabClick(1)}
-                        >
-                            <span className='icon'><MdOutlineProductionQuantityLimits /></span>
+                        <Button className={`w-100 ${activeTab === 1 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(1)}>
+                            <span className='icon'><FaProductHunt /></span>
                             Products
-                            <span className='arrow'><IoIosArrowForward /></span>
+                            <span className='arrow'><FaAngleRight /></span>
                         </Button>
-                        <div className={`submenuWrapper ${activeTab === 1 && submenus[1] ? 'collapse' : 'collapsed'}`}>
-                            <ul className="submenu">
-                                <li><Link to="#">Product List</Link></li>
-                                <li><Link to="#">Product View</Link></li>
-                                <li><Link to="#">Product Upload</Link></li>
+                        <div className={`submenuWrapper ${activeTab === 1 && isToggleSubmenu === true ? 'colapse' : 'colapsed'}`}>
+                            <ul className='submenu'>
+                                <li><Link to="/products">Product List</Link></li>
+                                <li><Link to="/product/details">Product View</Link></li>
+                                <li><Link to="/product/upload">Product Upload</Link></li>
                             </ul>
                         </div>
                     </li>
                     <li>
                         <Link to="/">
-                            <Button 
-                                className={`w-100 ${activeTab === 2 ? 'active' : ''}`} 
-                                onClick={() => handleTabClick(2)}
-                            >
-                                <span className='icon'><BsCartPlusFill /></span>
+                            <Button className={`w-100 ${activeTab === 2 ? 'active' : ''}`} onClick={() => isOpenSubmenu(2)}>
+                                <span className='icon'><FaCartArrowDown /></span>
                                 Orders
-                                <span className='arrow'><IoIosArrowForward /></span>
+                                <span className='arrow'><FaAngleRight /></span>
                             </Button>
                         </Link>
                     </li>
                     <li>
                         <Link to="/">
-                            <Button 
-                                className={`w-100 ${activeTab === 3 ? 'active' : ''}`} 
-                                onClick={() => handleTabClick(3)}
-                            >
-                                <span className='icon'><BiSolidMessage /></span>
+                            <Button className={`w-100 ${activeTab === 3 ? 'active' : ''}`} onClick={() => isOpenSubmenu(3)}>
+                                <span className='icon'><MdMessage /></span>
                                 Messages
-                                <span className='arrow'><IoIosArrowForward /></span>
+                                <span className='arrow'><FaAngleRight /></span>
                             </Button>
                         </Link>
                     </li>
                     <li>
                         <Link to="/">
-                            <Button 
-                                className={`w-100 ${activeTab === 4 ? 'active' : ''}`} 
-                                onClick={() => handleTabClick(4)}
-                            >
-                                <span className='icon'><BsBellFill /></span>
+                            <Button className={`w-100 ${activeTab === 4 ? 'active' : ''}`} onClick={() => isOpenSubmenu(4)}>
+                                <span className='icon'><FaBell /></span>
                                 Notifications
-                                <span className='arrow'><IoIosArrowForward /></span>
+                                <span className='arrow'><FaAngleRight /></span>
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/">
+                            <Button className={`w-100 ${activeTab === 5 ? 'active' : ''}`} onClick={() => isOpenSubmenu(5)}>
+                                <span className='icon'><IoIosSettings /></span>
+                                Settings
+                                <span className='arrow'><FaAngleRight /></span>
                             </Button>
                         </Link>
                     </li>
 
-                    <br />
+                    <li>
+                        <Link to="/login">
+                            <Button className={`w-100 ${activeTab === 6 ? 'active' : ''}`} onClick={() => isOpenSubmenu(6)}>
+                                <span className='icon'><FaUser /></span>
+                                Login
+                               
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/signUp">
+                            <Button className={`w-100 ${activeTab === 6 ? 'active' : ''}`} onClick={() => isOpenSubmenu(6)}>
+                                <span className='icon'><FaUser /></span>
+                                Sign Up
+                               
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/">
+                            <Button className={`w-100 ${activeTab === 8 ? 'active' : ''}`} onClick={() => isOpenSubmenu(8)}>
+                                <span className='icon'><FaCartArrowDown /></span>
+                                Orders
+                                <span className='arrow'><FaAngleRight /></span>
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/">
+                            <Button className={`w-100 ${activeTab === 9 ? 'active' : ''}`} onClick={() => isOpenSubmenu(9)}>
+                                <span className='icon'><MdMessage /></span>
+                                Messages
+                                <span className='arrow'><FaAngleRight /></span>
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/">
+                            <Button className={`w-100 ${activeTab === 10 ? 'active' : ''}`} onClick={() => isOpenSubmenu(10)}>
+                                <span className='icon'><FaBell /></span>
+                                Notifications
+                                <span className='arrow'><FaAngleRight /></span>
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/">
+                            <Button className={`w-100 ${activeTab === 10 ? 'active' : ''}`} onClick={() => isOpenSubmenu(11)} >
+                                <span className='icon'><IoIosSettings /></span>
+                                Settings
+                                <span className='arrow'><FaAngleRight /></span>
+                            </Button>
+                        </Link>
+                    </li>
 
-                    <div className="logoutWrapper">
-                        <div className="logoutBox">
-                            <Button variant='contained'>Log out</Button>
-                        </div>
-                    </div>
                 </ul>
+
+
+                <br />
+
+                <div className='logoutWrapper'>
+                    <div className='logoutBox'>
+                        <Button variant="contained"><IoMdLogOut /> Logout</Button>
+                    </div>
+                </div>
+
             </div>
-        </div>
-    );
+        </>
+    )
 }
 
 export default Sidebar;

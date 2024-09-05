@@ -1,4 +1,3 @@
-import DashboardBox from "./components/dashboardBox";
 import { HiDotsVertical } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
@@ -24,24 +23,46 @@ import Pagination from '@mui/material/Pagination';
 import { MyContext } from "../../App";
 
 import Rating from '@mui/material/Rating';
-
-export const data = [
-    ["Year", "Sales", "Expenses"],
-    ["2013", 1000, 400],
-    ["2014", 1170, 460],
-    ["2015", 660, 1120],
-    ["2016", 1030, 540],
-];
+import { Link } from "react-router-dom";
 
 
 
-export const options = {
-    'backgroundColor': 'transparent',
-    'chartArea': { 'width': '100%', 'height': '100%' },
-};
+import { emphasize, styled } from '@mui/material/styles';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import HomeIcon from '@mui/icons-material/Home';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
-const Dashboard = () => {
+import Checkbox from '@mui/material/Checkbox';
+import DashboardBox from "../../Pages/Dashboard/components/dashboardBox.js";
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+//breadcrumb code
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+        theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[800];
+    return {
+        backgroundColor,
+        height: theme.spacing(3),
+        color: theme.palette.text.primary,
+        fontWeight: theme.typography.fontWeightRegular,
+        '&:hover, &:focus': {
+            backgroundColor: emphasize(backgroundColor, 0.06),
+        },
+        '&:active': {
+            boxShadow: theme.shadows[1],
+            backgroundColor: emphasize(backgroundColor, 0.12),
+        },
+    };
+});
+
+
+const Products = () => {
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [showBy, setshowBy] = useState('');
     const [showBysetCatBy, setCatBy] = useState('');
@@ -49,96 +70,45 @@ const Dashboard = () => {
 
     const ITEM_HEIGHT = 48;
 
-    const context = useContext(MyContext);
-
-    useEffect(() => {
-        context.setisHideSidebarAndHeader(false);
-        window.scrollTo(0, 0);
-    }, []);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-
+    useEffect(()=>{
+        window.scrollTo(0,0);
+    },[]);
 
     return (
         <>
             <div className="right-content w-100">
-                <div className="row dashboardBoxWrapperRow">
-                    <div className="col-md-8">
+                <div className="card shadow border-0 w-100 flex-row p-4">
+                    <h5 className="mb-0">Product List</h5>
+                    <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
+                        <StyledBreadcrumb
+                            component="a"
+                            href="#"
+                            label="Dashboard"
+                            icon={<HomeIcon fontSize="small" />}
+                        />
+
+                        <StyledBreadcrumb
+                            label="Products"
+                            deleteIcon={<ExpandMoreIcon />}
+
+                        />
+                    </Breadcrumbs>
+                </div>
+
+
+
+                <div className="row dashboardBoxWrapperRow dashboardBoxWrapperRowV2">
+                    <div className="col-md-12">
                         <div className="dashboardBoxWrapper d-flex">
                             <DashboardBox color={["#1da256", "#48d483"]} icon={<FaUserCircle />} grow={true} />
                             <DashboardBox color={["#c012e2", "#eb64fe"]} icon={<IoMdCart />} />
                             <DashboardBox color={["#2c78e5", "#60aff5"]} icon={<MdShoppingBag />} />
-                            <DashboardBox color={["#e1950e", "#f3cd29"]} icon={<GiStarsStack />} />
-                        </div>
-                    </div>
-
-
-                    <div className="col-md-4 pl-0 topPart2">
-                        <div className="box graphBox">
-                            <div className="d-flex align-items-center w-100 bottomEle">
-                                <h6 className="text-white mb-0 mt-0">Total Sales</h6>
-                                <div className="ml-auto">
-                                    <Button className="ml-auto toggleIcon" onClick={handleClick}><HiDotsVertical /></Button>
-                                    <Menu
-                                        className="dropdown_menu"
-                                        MenuListProps={{
-                                            'aria-labelledby': 'long-button',
-                                        }}
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
-                                        PaperProps={{
-                                            style: {
-                                                maxHeight: ITEM_HEIGHT * 4.5,
-                                                width: '20ch',
-                                            },
-                                        }}
-                                    >
-
-                                        <MenuItem onClick={handleClose}>
-                                            <IoIosTimer />  Last Day
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <IoIosTimer />  Last Week
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <IoIosTimer />  Last Month
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <IoIosTimer />  Last Year
-                                        </MenuItem>
-
-                                    </Menu>
-                                </div>
-
-                            </div>
-
-                            <h3 className="text-white font-weight-bold">$3,787,681.00</h3>
-                            <p>$3,578.90 in last month</p>
-
-
-                            <Chart
-                                chartType="PieChart"
-                                width="100%"
-                                height="170px"
-                                data={data}
-                                options={options}
-                            />
 
                         </div>
                     </div>
 
 
                 </div>
-
-
-
 
                 <div className="card shadow border-0 p-3 mt-4">
                     <h3 className="hd">Best Selling Products</h3>
@@ -210,7 +180,11 @@ const Dashboard = () => {
 
                             <tbody>
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -239,7 +213,11 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            <Link to="/product/details">
+                                                <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
+                                            </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -247,7 +225,11 @@ const Dashboard = () => {
                                 </tr>
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -276,7 +258,11 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                        <Link to="/product/details">
+                                        <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
+                                    </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -284,7 +270,11 @@ const Dashboard = () => {
                                 </tr>
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -313,7 +303,11 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                        <Link to="/product/details">
+                                        <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
+                                    </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -322,7 +316,11 @@ const Dashboard = () => {
 
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -351,7 +349,9 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -360,7 +360,11 @@ const Dashboard = () => {
 
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -389,7 +393,9 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -398,7 +404,11 @@ const Dashboard = () => {
 
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -427,7 +437,9 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -436,7 +448,11 @@ const Dashboard = () => {
 
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -465,7 +481,9 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -474,7 +492,11 @@ const Dashboard = () => {
 
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -503,7 +525,9 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
@@ -512,7 +536,11 @@ const Dashboard = () => {
 
 
                                 <tr>
-                                    <td>#1</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <Checkbox {...label} />  <span>#1</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="d-flex align-items-center productBox">
                                             <div className="imgWrapper">
@@ -541,14 +569,16 @@ const Dashboard = () => {
                                     <td>$38k</td>
                                     <td>
                                         <div className="actions d-flex align-items-center">
-                                            <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            <Link to="/product/details">
+                                                <Button className="secondary" color="secondary"><FaEye /></Button>
+                                            </Link>
                                             <Button className="success" color="success"><FaPencilAlt /></Button>
                                             <Button className="error" color="error"><MdDelete /></Button>
                                         </div>
                                     </td>
                                 </tr>
 
-                          
+
                             </tbody>
 
                         </table>
@@ -564,11 +594,9 @@ const Dashboard = () => {
 
 
                 </div>
-
-
             </div>
         </>
     )
 }
 
-export default Dashboard;
+export default Products;
