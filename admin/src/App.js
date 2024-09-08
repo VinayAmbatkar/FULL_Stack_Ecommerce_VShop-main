@@ -11,6 +11,8 @@ import SignUp from "./Pages/SignUP";
 import Products from "./Pages/Products";
 import ProductDetails from "./Pages/ProductDetails";
 import ProductUpload from "./Pages/ProductUpload";
+import CategoryAdd from "./Pages/CategoryAdd";
+
 
 const MyContext = createContext();
 
@@ -106,6 +108,11 @@ function App() {
                 path="/product/upload"
                 exact={true}
                 element={<ProductUpload />}
+              />
+              <Route
+                path="/category/add"
+                exact={true}
+                element={<CategoryAdd />}
               />
             </Routes>
           </div>

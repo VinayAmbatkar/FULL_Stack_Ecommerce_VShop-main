@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');//For parsing incoming request tp backend bodies
+const bodyParser = require('body-parser');//For parsing incoming request to backend bodies
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv/config');

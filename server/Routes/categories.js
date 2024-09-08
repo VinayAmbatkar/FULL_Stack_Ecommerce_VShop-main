@@ -1,5 +1,5 @@
 const express = require('express');
-const { category } = require('../Models/category');
+const { Category } = require('../Models/category'); // Correcting the import
 const pLimit = require('p-limit');
 const cloudinary = require('cloudinary').v2;
 const router = express.Router();
@@ -26,7 +26,7 @@ const uploadImages = async (images) => {
 // Route to get all categories
 router.get('/', async (req, res) => {
     try {
-        const categoryList = await category.find();
+        const categoryList = await Category.find(); // Using Category instead of category
         if (!categoryList || categoryList.length === 0) {
             return res.status(404).json({ success: false, message: 'No categories found' });
         }
@@ -39,18 +39,18 @@ router.get('/', async (req, res) => {
 // Route to get category by ID
 router.get('/:id', async (req, res) => {
     try {
-        const categoryItem = await category.findById(req.params.id);
+        const categoryItem = await Category.findById(req.params.id); // Using Category
         if (!categoryItem) {
             return res.status(404).json({
                 message: 'The category with the given ID was not found',
-                success: false
+                success: false,
             });
         }
         res.status(200).send(categoryItem);
     } catch (err) {
         res.status(500).json({
             error: err.message,
-            success: false
+            success: false,
         });
     }
 });
@@ -63,15 +63,15 @@ router.post('/create', async (req, res) => {
         if (!imgurl || imgurl.length === 0) {
             return res.status(500).json({
                 error: 'Error in uploading images',
-                status: false
+                status: false,
             });
         }
 
         // Creating a new category
-        let newCategory = new category({
+        let newCategory = new Category({
             name: req.body.name,
             images: imgurl,
-            color: req.body.color
+            color: req.body.color,
         });
 
         newCategory = await newCategory.save();
@@ -80,7 +80,7 @@ router.post('/create', async (req, res) => {
     } catch (err) {
         res.status(500).json({
             error: err.message,
-            success: false
+            success: false,
         });
     }
 });
@@ -88,26 +88,26 @@ router.post('/create', async (req, res) => {
 // Route to delete category by ID
 router.delete('/:id', async (req, res) => {
     try {
-        const deletedCategory = await category.findByIdAndDelete(req.params.id);
+        const deletedCategory = await Category.findByIdAndDelete(req.params.id); // Using Category
         if (!deletedCategory) {
             return res.status(404).json({
                 message: 'The category with the given ID was not found',
-                success: false
+                success: false,
             });
         }
         res.status(200).json({
             message: 'The category was successfully deleted',
-            success: true
+            success: true,
         });
     } catch (err) {
         res.status(500).json({
             error: err.message,
-            success: false
+            success: false,
         });
     }
 });
 
-// Route to update category by ID put request
+// Route to update category by ID
 router.put('/:id', async (req, res) => {
     try {
         const imgurl = await uploadImages(req.body.images);
@@ -115,16 +115,16 @@ router.put('/:id', async (req, res) => {
         if (!imgurl || imgurl.length === 0) {
             return res.status(500).json({
                 error: 'Error in uploading images',
-                status: false
+                status: false,
             });
         }
 
-        const updatedCategory = await category.findByIdAndUpdate(
+        const updatedCategory = await Category.findByIdAndUpdate(
             req.params.id,
             {
                 name: req.body.name,
                 images: imgurl,
-                color: req.body.color
+                color: req.body.color,
             },
             { new: true }
         );
@@ -132,14 +132,14 @@ router.put('/:id', async (req, res) => {
         if (!updatedCategory) {
             return res.status(404).json({
                 message: 'The category cannot be updated',
-                success: false
+                success: false,
             });
         }
         res.status(200).json(updatedCategory);
     } catch (err) {
         res.status(500).json({
             error: err.message,
-            success: false
+            success: false,
         });
     }
 });
