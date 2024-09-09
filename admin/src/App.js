@@ -12,6 +12,7 @@ import Products from "./Pages/Products";
 import ProductDetails from "./Pages/ProductDetails";
 import ProductUpload from "./Pages/ProductUpload";
 import CategoryAdd from "./Pages/CategoryAdd";
+import Category from "./Pages/Category";
 
 
 const MyContext = createContext();
@@ -77,11 +78,10 @@ function App() {
         <div className="main d-flex">
           {isHideSidebarAndHeader !== true && (
             <>
-            <div className={`sidebarOverlay d-none ${isOpenNav===true && 'show'}`} onClick={()=>setIsOpenNav(false)}></div>
+              <div className={`sidebarOverlay d-none ${isOpenNav === true && 'show'}`} onClick={() => setIsOpenNav(false)}></div>
               <div
-                className={`sidebarWrapper ${
-                  isToggleSidebar === true ? "toggle" : ""
-                } ${isOpenNav === true ? "open" : ""}`}
+                className={`sidebarWrapper ${isToggleSidebar === true ? "toggle" : ""
+                  } ${isOpenNav === true ? "open" : ""}`}
               >
                 <Sidebar />
               </div>
@@ -89,9 +89,8 @@ function App() {
           )}
 
           <div
-            className={`content ${isHideSidebarAndHeader === true && "full"} ${
-              isToggleSidebar === true ? "toggle" : ""
-            }`}
+            className={`content ${isHideSidebarAndHeader === true && "full"} ${isToggleSidebar === true ? "toggle" : ""
+              }`}
           >
             <Routes>
               <Route path="/" exact={true} element={<Dashboard />} />
@@ -113,6 +112,12 @@ function App() {
                 path="/category/add"
                 exact={true}
                 element={<CategoryAdd />}
+              />
+
+              <Route
+                path="/category"
+                exact={true}
+                element={<Category />}
               />
             </Routes>
           </div>

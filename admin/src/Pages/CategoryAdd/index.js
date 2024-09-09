@@ -8,6 +8,9 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import { fetchDataFromApi, postData } from '../../utils/api';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
 
 //breadcrumb code
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -43,12 +46,15 @@ const MenuProps = {
 
 
 const CategoryAdd = () => {
-
+    const [isLoading, setIsLoading] = useState(false);
     const [formFields, setFormFields] = useState({
         name: '',
         images: [],
         color: ''
     });
+
+    // for navigation
+   const history = useNavigate();
 
     // storing the input data from target value
     const changeInput = (e) => {
@@ -71,11 +77,17 @@ const CategoryAdd = () => {
         e.preventDefault();
         console.log(formFields); // showing it on console
 
-        postData('/api/category/create', formFields).then(res => {
-            console.log(res);
-            
-        });
-        alert("Data Send Successfully ")
+        setIsLoading(true);
+
+
+        //post Data 
+        postData('/api/category/create', formFields).then(res=>{
+          setIsLoading(false);  
+          history(`/category`)
+        })
+
+
+
     };
 
     return (
@@ -129,7 +141,8 @@ const CategoryAdd = () => {
                         <div className="imagesUploadSec">
                             <br />
                             <Button type="submit" className="btn-blue btn-lg btn-big w-100">
-                                <FaCloudUploadAlt /> &nbsp; PUBLISH AND VIEW
+                                <FaCloudUploadAlt /> &nbsp;{isLoading ? <CircularProgress color="inherit" className=" ml-4 loader" /> : 'PUBLISH AND VIEW'}
+                                
                             </Button>
                         </div>
                     </div>
