@@ -5,7 +5,7 @@ import "./responsive.css";
 import Dashboard from "./Pages/Dashboard";
 import Header from "./Components/Header";
 import Sidebar from "./Components/Sidebar";
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUP";
 import Products from "./Pages/Products";
@@ -13,7 +13,9 @@ import ProductDetails from "./Pages/ProductDetails";
 import ProductUpload from "./Pages/ProductUpload";
 import CategoryAdd from "./Pages/CategoryAdd";
 import Category from "./Pages/Category";
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import LoadingBar from 'react-top-loading-bar';
 
 const MyContext = createContext();
 
@@ -26,6 +28,12 @@ function App() {
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
+  const [progress, setProgress] = useState(0);
+  const [alertBox, setAlertBox] = useState({
+    open: false,
+    color: 'success',
+    msg: ''
+  });
 
   useEffect(() => {
     if (theme === "dark") {
@@ -43,9 +51,7 @@ function App() {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -53,6 +59,16 @@ function App() {
 
   const openNav = () => {
     setIsOpenNav(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertBox({
+      open: false,
+      msg: '',
+    });
   };
 
   const values = {
@@ -67,12 +83,37 @@ function App() {
     windowWidth,
     openNav,
     isOpenNav,
-    setIsOpenNav
+    setIsOpenNav,
+    alertBox,
+    setAlertBox,
+    setProgress,
   };
 
   return (
     <BrowserRouter>
       <MyContext.Provider value={values}>
+        <LoadingBar
+         className='topLoadingBar'
+          color='#1866ee'
+          progress={progress}
+          onLoaderFinished={() => setProgress(0)}
+          
+          
+        />
+
+        <Snackbar
+          open={alertBox.open}
+          autoHideDuration={6000}
+          onClose={() => setAlertBox({ ...alertBox, open: false })}
+        >
+          <Alert
+            onClose={() => setAlertBox({ ...alertBox, open: false })}
+            severity={alertBox.color}
+          >
+            {alertBox.msg}
+          </Alert>
+        </Snackbar>
+
         {isHideSidebarAndHeader !== true && <Header />}
 
         <div className="main d-flex">
@@ -93,32 +134,15 @@ function App() {
               }`}
           >
             <Routes>
-              <Route path="/" exact={true} element={<Dashboard />} />
-              <Route path="/dashboard" exact={true} element={<Dashboard />} />
-              <Route path="/login" exact={true} element={<Login />} />
-              <Route path="/signUp" exact={true} element={<SignUp />} />
-              <Route path="/products" exact={true} element={<Products />} />
-              <Route
-                path="/product/details"
-                exact={true}
-                element={<ProductDetails />}
-              />
-              <Route
-                path="/product/upload"
-                exact={true}
-                element={<ProductUpload />}
-              />
-              <Route
-                path="/category/add"
-                exact={true}
-                element={<CategoryAdd />}
-              />
-
-              <Route
-                path="/category"
-                exact={true}
-                element={<Category />}
-              />
+              <Route path="/" exact element={<Dashboard />} />
+              <Route path="/dashboard" exact element={<Dashboard />} />
+              <Route path="/login" exact element={<Login />} />
+              <Route path="/signUp" exact element={<SignUp />} />
+              <Route path="/products" exact element={<Products />} />
+              <Route path="/product/details" exact element={<ProductDetails />} />
+              <Route path="/product/upload" exact element={<ProductUpload />} />
+              <Route path="/category/add" exact element={<CategoryAdd />} />
+              <Route path="/category" exact element={<Category />} />
             </Routes>
           </div>
         </div>

@@ -11,7 +11,7 @@ import Chip from '@mui/material/Chip';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Checkbox from '@mui/material/Checkbox';
-import { editData, fetchDataFromApi, deleteData } from "../../utils/api.js"; // Ensure deleteData is imported
+import { editData, fetchDataFromApi, deleteData } from "../../utils/api.js";
 
 //Backdrop loader
 import Backdrop from '@mui/material/Backdrop';
@@ -23,8 +23,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 // Breadcrumb styling
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -48,29 +46,29 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 });
 
 const Category = () => {
-    const [catData, setCatData] = useState([]);
+    const [catData, setCatData] = useState({ categoryList: [], totalPages: 1 });
     const [open, setOpen] = React.useState(false);
-    const [editFields, setEditFields] = useState({});
     const [editId, setEditId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-
-        // Fetch category data from API
-        fetchDataFromApi('/api/category').then((res) => {
-            console.log("API Response:", res);
-            setCatData(res); // Set fetched data to state
-        }).catch((error) => {
-            console.error("Error fetching data:", error);
-        });
-    }, []);
-
     const [formFields, setFormFields] = useState({
         name: '',
         images: [],
         color: ''
     });
+    const context = useContext(MyContext);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        context.setProgress(20);
+
+        fetchDataFromApi('/api/category').then((res) => {
+            console.log("API Response:", res);
+            setCatData(res || { categoryList: [], totalPages: 1 });
+            context.setProgress(100);
+        }).catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+    }, []);
 
     const changeInput = (e) => {
         setFormFields({
@@ -80,11 +78,9 @@ const Category = () => {
     };
 
     const addImgUrl = (e) => {
-        const arr = [];
-        arr.push(e.target.value);
         setFormFields({
             ...formFields,
-            [e.target.name]: arr
+            [e.target.name]: [e.target.value]
         });
     };
 
@@ -108,7 +104,6 @@ const Category = () => {
                 images: res.images,
                 color: res.color
             });
-            console.log(res);
         });
     };
 
@@ -119,16 +114,23 @@ const Category = () => {
         // Updating values
         editData(`/api/category/${editId}`, formFields)
             .then((res) => {
-                // Update the catData state directly without fetching again
-                setCatData(prevCatData =>
-                    prevCatData.map((item) =>
+                setCatData(prevCatData => ({
+                    ...prevCatData,
+                    categoryList: prevCatData.categoryList.map((item) =>
                         item.id === editId
                             ? { ...item, name: formFields.name, images: formFields.images, color: formFields.color }
                             : item
                     )
-                );
+                }));
                 setOpen(false);
                 setIsLoading(false);
+
+                // Show success message after the process is completed
+                context.setAlertBox({
+                    open: true,
+                    error: false,
+                    msg: "The category was updated successfully"
+                });
             })
             .catch((error) => {
                 console.error("Error updating category:", error);
@@ -139,31 +141,50 @@ const Category = () => {
     // delete the category by id
     const deleteCat = (id) => {
         deleteData(`/api/category/${id}`)
-            .then((res) => {
-                setCatData(prevCatData => prevCatData.filter(item => item.id !== id));
+            .then(() => {
+                setCatData(prevCatData => ({
+                    ...prevCatData,
+                    categoryList: prevCatData.categoryList.filter(item => item.id !== id)
+                }));
             })
             .catch((error) => {
                 console.error("Error deleting category:", error);
             });
-    }
+    };
+
+    // handle page change
+    const handleChange = (event, value) => {
+        context.setProgress(40);
+        fetchDataFromApi(`/api/category?page=${value}`).then((res) => {
+            setCatData(res || { categoryList: [], totalPages: 1 });
+            context.setProgress(100);
+        });
+    };
 
     return (
         <>
             <div className="right-content w-100">
                 <div className="card shadow border-0 w-100 flex-row p-4">
                     <h5 className="mb-0">Category List</h5>
-                    <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
-                        <StyledBreadcrumb
-                            component="a"
-                            href="#"
-                            label="Dashboard"
-                            icon={<HomeIcon fontSize="small" />}
-                        />
-                        <StyledBreadcrumb
-                            label="Products"
-                            deleteIcon={<ExpandMoreIcon />}
-                        />
-                    </Breadcrumbs>
+
+                    <div className="ml-auto d-flex align-items-center" style={{ marginLeft: 'auto' }}>
+                        <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
+                            <StyledBreadcrumb
+                                component="a"
+                                href="#"
+                                label="Dashboard"
+                                icon={<HomeIcon fontSize="small" />}
+                            />
+                            <StyledBreadcrumb
+                                label="Products"
+                                deleteIcon={<ExpandMoreIcon />}
+                            />
+                        </Breadcrumbs>
+
+                        <Link to="/category/add">
+                            <Button className="btn-blue ml-4 pl-5 pr-5" style={{ marginLeft: 5 }}> Add Category</Button>
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="card shadow border-0 p-3 mt-4">
@@ -180,16 +201,15 @@ const Category = () => {
                             </thead>
 
                             <tbody>
-                                {catData?.length !== 0 && catData?.map((item, index) => (
+                                {catData?.categoryList?.length > 0 && catData.categoryList.map((item, index) => (
                                     <tr key={index}>
                                         <td>
                                             <div className="d-flex align-items-center">
-                                                <Checkbox {...label} />
+                                                <Checkbox />
                                                 <span>#{index + 1}</span>
                                             </div>
                                         </td>
                                         <td>
-                                            {/* Category Images */}
                                             <div className="d-flex align-items-center productBox">
                                                 <div className="imgWrapper">
                                                     <div className="img card shadow m-0">
@@ -202,10 +222,10 @@ const Category = () => {
                                         <td>{item.color}</td>
                                         <td>
                                             <div className="actions d-flex align-items-center">
-                                                <Button className="success" color="success" onClick={() => editCategory(item.id)}>
+                                                <Button color="success" onClick={() => editCategory(item.id)}>
                                                     <FaPencilAlt />
                                                 </Button>
-                                                <Button className="error" color="error" onClick={() => deleteCat(item.id)}>
+                                                <Button color="error" onClick={() => deleteCat(item.id)}>
                                                     <MdDelete />
                                                 </Button>
                                             </div>
@@ -216,63 +236,72 @@ const Category = () => {
                         </table>
 
                         <div className="d-flex tableFooter">
-                            <p>showing <b>{catData.length}</b> of <b>60</b> results</p>
-                            <Pagination count={10} color="primary" className="pagination" showFirstButton showLastButton />
+                            <Pagination
+                                count={catData?.totalPages || 1}
+                                color="primary"
+                                className="pagination"
+                                showFirstButton
+                                showLastButton
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <Dialog
-                className="editModal"
-                open={open}
-                onClose={handleClose}
-            >
+            <Dialog className="editModal" open={open} onClose={handleClose}>
                 <DialogTitle>Edit Your Category</DialogTitle>
 
                 <form>
                     <DialogContent>
-                        <TextField
-                            autoFocus
-                            required
-                            margin="dense"
-                            id="name"
-                            name="name"
-                            label="Category Name"
-                            type="text"
-                            fullWidth
-                            value={formFields.name}
-                            onChange={changeInput}
-                        />
-                        <TextField
-                            autoFocus
-                            required
-                            margin="dense"
-                            id="name"
-                            name="images"
-                            label="Category Image"
-                            type="text"
-                            fullWidth
-                            value={formFields.images}
-                            onChange={addImgUrl}
-                        />
-                        <TextField
-                            autoFocus
-                            required
-                            margin="dense"
-                            id="name"
-                            name="color"
-                            label="Category color"
-                            type="text"
-                            fullWidth
-                            value={formFields.color}
-                            onChange={changeInput}
-                        />
+                        <div className="form-group mb-3">
+                            <TextField
+                                autoFocus
+                                required
+                                margin="dense"
+                                id="name"
+                                name="name"
+                                label="Category Name"
+                                type="text"
+                                fullWidth
+                                value={formFields.name}
+                                onChange={changeInput}
+                            />
+                            <TextField
+                                autoFocus
+                                required
+                                margin="dense"
+                                id="images"
+                                name="images"
+                                label="Category Image"
+                                type="text"
+                                fullWidth
+                                value={formFields.images}
+                                onChange={addImgUrl}
+                            />
+                            <TextField
+                                autoFocus
+                                required
+                                margin="dense"
+                                id="color"
+                                name="color"
+                                label="Category Color"
+                                type="text"
+                                fullWidth
+                                value={formFields.color}
+                                onChange={changeInput}
+                            />
+                        </div>
                     </DialogContent>
+
                     <DialogActions>
-                        <Button onClick={handleClose} variant="outlined">Cancel</Button>
-                        <Button type="button" onClick={categoryEdiFun} variant="contained">
-                            {isLoading ? <CircularProgress color="inherit" className=" ml-4 loader" /> : 'Submit'}
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button variant="contained" size="small" onClick={categoryEdiFun} disabled={isLoading}>
+                            {isLoading ? (
+                                <CircularProgress color="inherit" size={20} />
+                            ) : (
+                                'Update'
+                            )}
                         </Button>
                     </DialogActions>
                 </form>

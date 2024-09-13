@@ -1,18 +1,17 @@
+import React, { useState, useContext } from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { emphasize, styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
-import { useState } from 'react';
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Button from '@mui/material/Button';
-import axios from 'axios';
-import { fetchDataFromApi, postData } from '../../utils/api';
-import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
+import { postData } from '../../utils/api';
+import { MyContext } from '../../App';
 
-//breadcrumb code
+// Breadcrumb styling
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
         theme.palette.mode === 'light'
@@ -33,18 +32,6 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     };
 });
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
-
 const CategoryAdd = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [formFields, setFormFields] = useState({
@@ -53,10 +40,10 @@ const CategoryAdd = () => {
         color: ''
     });
 
-    // for navigation
-   const history = useNavigate();
+    const { setAlertBox } = useContext(MyContext); // Using context correctly
+    const navigate = useNavigate(); // Correcting the navigate usage
 
-    // storing the input data from target value
+    // Handle form input changes
     const changeInput = (e) => {
         setFormFields({
             ...formFields,
@@ -69,25 +56,47 @@ const CategoryAdd = () => {
         arr.push(e.target.value);
         setFormFields({
             ...formFields,
-            [e.target.name]: arr // kept e.target.name unchanged
+            [e.target.name]: arr
         });
     };
 
-    const addCategory = (e) => {
+    const addCategory = async (e) => {
         e.preventDefault();
-        console.log(formFields); // showing it on console
 
-        setIsLoading(true);
+        if (formFields.name !== "" && formFields.images.length !== 0 && formFields.color !== "") {
+            setIsLoading(true);
 
+            try {
+                // Post data to server
+                await postData('/api/category/create', formFields);
+                setIsLoading(false);
 
-        //post Data 
-        postData('/api/category/create', formFields).then(res=>{
-          setIsLoading(false);  
-          history(`/category`)
-        })
+                // Display success message
+                setAlertBox({
+                    open: true,
+                    color: 'success',
+                    msg: 'Category added successfully!'
+                });
 
-
-
+                // Navigate to category page
+                navigate(`/category`);
+            } catch (error) {
+                setIsLoading(false);
+                // Display error message
+                setAlertBox({
+                    open: true,
+                    color: 'warning',
+                    msg: 'Failed to add category!'
+                });
+            }
+        } else {
+            // Display warning for missing fields
+            setAlertBox({
+                open: true,
+                color: 'warning',
+                msg: 'Please fill all the details'
+            });
+        }
     };
 
     return (
@@ -102,7 +111,6 @@ const CategoryAdd = () => {
                             label="Dashboard"
                             icon={<HomeIcon fontSize="small" />}
                         />
-
                         <StyledBreadcrumb
                             component="a"
                             label="Category"
@@ -110,28 +118,48 @@ const CategoryAdd = () => {
                             deleteIcon={<ExpandMoreIcon />}
                         />
                         <StyledBreadcrumb
-                            label=" Add Category"
+                            label="Add Category"
                             deleteIcon={<ExpandMoreIcon />}
                         />
                     </Breadcrumbs>
                 </div>
+
                 <form className='form' onSubmit={addCategory}>
                     <div className='row'>
                         <div className='col-md-12'>
                             <div className='card p-4 mt-0'>
+
                                 <div className='form-group'>
                                     <h6>Category Name</h6>
-                                    <input type='text' name="name" onChange={changeInput} />
+                                    <input
+                                        type='text'
+                                        name="name"
+                                        value={formFields.name}
+                                        onChange={changeInput}
+                                        required
+                                    />
                                 </div>
 
                                 <div className='form-group'>
-                                    <h6>Image Url</h6>
-                                    <input type='text' name="images" onChange={addImgUrl} />
+                                    <h6>Image URL</h6>
+                                    <input
+                                        type='text'
+                                        name="images"
+                                        value={formFields.images[0] || ''}
+                                        onChange={addImgUrl}
+                                        required
+                                    />
                                 </div>
 
                                 <div className='form-group'>
                                     <h6>Color</h6>
-                                    <input type='text' name="color" onChange={changeInput} />
+                                    <input
+                                        type='text'
+                                        name="color"
+                                        value={formFields.color}
+                                        onChange={changeInput}
+                                        required
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -139,10 +167,9 @@ const CategoryAdd = () => {
 
                     <div className='card p-4 mt-0'>
                         <div className="imagesUploadSec">
-                            <br />
-                            <Button type="submit" className="btn-blue btn-lg btn-big w-100">
-                                <FaCloudUploadAlt /> &nbsp;{isLoading ? <CircularProgress color="inherit" className=" ml-4 loader" /> : 'PUBLISH AND VIEW'}
-                                
+                            <Button type="submit" className="btn-blue btn-lg btn-big w-100" disabled={isLoading}>
+                                <FaCloudUploadAlt /> &nbsp;
+                                {isLoading ? <CircularProgress color="inherit" className="ml-4 loader" /> : 'PUBLISH AND VIEW'}
                             </Button>
                         </div>
                     </div>

@@ -37,11 +37,25 @@ h5,
 h6,
 p {
   color: #403e57;
+
 }
 
 h4 {
   line-height: 32px;
 }
+
+.topLoadingBar {
+  height: 5px !important;
+  background: linear-gradient(90deg, #1866ee, #00ff00, #1866ee) !important;
+  background-size: 200% 100%;
+  animation: loadingBarAnimation 3s ease-in-out infinite;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+}
+
+
 
 .btn-blue {
   background: #0858f7 !important;
@@ -70,7 +84,7 @@ button .loader{
 
 .btn-big svg {
   font-size: 25px !important;
-  margin-left: 7px;
+ 
 }
 
 .btn-round {
@@ -1055,6 +1069,8 @@ body.dark table td {
 body.dark .table-bordered td,
 .table-bordered th {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #000 !important;
+  font-weight: 600 !important;
 }
 
 body.dark .MuiPaginationItem-root {
@@ -1655,4 +1671,9 @@ body.dark .imgUploadBox .uploadBox {
 
 .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
   width: 600px !important;
+}
+
+
+body.dark .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
+  color: rgba(255,255,255,0.8);
 }
