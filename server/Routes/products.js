@@ -46,11 +46,12 @@ router.post(`/create`, async (req, res) => {
             description: req.body.description,
             images: imgUrls,
             brand: req.body.brand,
+            oldPrice: req.body.oldPrice,
             price: req.body.price,
             category: req.body.category,
             countInStock: req.body.countInStock,
             rating: req.body.rating,
-            numReviews: req.body.numReviews,
+            // numReviews: req.body.numReviews,
             isFeatured: req.body.isFeatured,
         });
 

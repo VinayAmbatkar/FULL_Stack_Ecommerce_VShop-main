@@ -1677,3 +1677,28 @@ body.dark .imgUploadBox .uploadBox {
 body.dark .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
   color: rgba(255,255,255,0.8);
 }
+
+
+.inputBtn button{
+  position: absolute;
+  top:10px ;
+  right: 10px;
+  z-index: 100;
+
+}
+.imgGrid {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping if there are many images */
+  gap: 10px; /* Adds space between images */
+}
+
+.imgGrid .img {
+  flex: 1 1 30%; /* Each image takes 30% of the container width */
+  max-width: 100%;
+}
+
+.imgGrid .img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fills the container */
+}

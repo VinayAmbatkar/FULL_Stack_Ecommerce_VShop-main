@@ -6,7 +6,7 @@ import Chip from '@mui/material/Chip';
 
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Rating from '@mui/material/Rating';
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Button from '@mui/material/Button';
@@ -58,6 +58,12 @@ const ProductUpload = () => {
     const [subCatVal, setSubCatVal] = useState('');
     const [ratingsValue, setRatingValue] = useState(1);
     const [productRams, setProductRAMS] = useState([]);
+const[productImagesArr,setProductImages] = useState([]);
+
+    const productImages =useRef();
+
+
+    const imagesArr=[];
 
     const handleChangeCategory = (event) => {
         setcategoryVal(event.target.value);
@@ -67,7 +73,7 @@ const ProductUpload = () => {
         setSubCatVal(event.target.value);
     };
 
-  
+
 
     const handleChangeProductRams = (event) => {
         const {
@@ -80,6 +86,11 @@ const ProductUpload = () => {
 
 
     };
+
+  const  addProductImages=()=>{
+    imagesArr.push(productImages.current.value);
+    setProductImages(imagesArr);
+  }
 
 
     return (
@@ -289,10 +300,30 @@ const ProductUpload = () => {
 
                         </div>
 
+                        <div className="col-sm-3">
+                            <div className="imgGrid">
+                                {
+                                    productImagesArr?.length!==0 && productImagesArr?.map((item,index)=>{
+                                        return(
+                                            <div className="img">
+                                                <img src={item} alt="" />
+                                            </div>
+                                        )
+                                    })
+                                }
+                               
+                               
+                            </div>
+                        </div>
+
+
                     </div>
 
 
-                    <div className='card p-4 mt-0'>
+                    <br />
+
+
+                    {/* <div className='card p-4 mt-0'>
                         <div className="imagesUploadSec">
                             <h5 class="mb-4">Media And Published</h5>
 
@@ -329,7 +360,50 @@ const ProductUpload = () => {
                             <Button type="button" className="btn-blue btn-lg btn-big w-100"
                             ><FaCloudUploadAlt /> &nbsp; PUBLISH AND VIEW  </Button>
                         </div>
+                    </div> */}
+
+                    <div className="row">
+                        <div className="col">
+                            <div className="form-group">
+                                <h6 className='text-uppercase'>Product Images</h6>
+                                <div className="position-relative inputBtn">
+                                    <input type="text" ref={productImages} />
+                                    <Button className='btn-blue'onClick={addProductImages}>ADD</Button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <br />
+
+                    <Button type="button" className="btn-blue btn-lg btn-big w-100"
+                    ><FaCloudUploadAlt /> &nbsp; PUBLISH AND VIEW  </Button>
                 </form>
 
             </div>
