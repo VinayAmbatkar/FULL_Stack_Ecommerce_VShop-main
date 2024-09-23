@@ -16,54 +16,67 @@ router.get(`/`, async (req, res) => {
 });
 
 // Create the product
+// Create the product
+// Create the product
 router.post(`/create`, async (req, res) => {
     try {
-        const category = await Category.findById(req.body.category);
+        // Validate category
+        const categoryId = req.body.category;
+        if (!categoryId || !categoryId.trim()) {
+            return res.status(400).json({ error: "Category ID is required", status: false });
+        }
+
+        const category = await Category.findById(categoryId);
         if (!category) {
             return res.status(404).send('Invalid Category');
         }
 
-        const limit = pLimit(2);
-
-        // Check if images are provided
         if (!req.body.images || !Array.isArray(req.body.images) || req.body.images.length === 0) {
-            return res.status(400).json({
-                error: "At least one image is required",
-                status: false
-            });
+            return res.status(400).json({ error: "At least one image is required", status: false });
         }
 
-        // Upload images to Cloudinary and get their URLs
-        const imagesToUpload = req.body.images.map((image) => {
-            return limit(() => cloudinary.uploader.upload(image));
-        });
+        // Function to validate URLs
+        const isValidUrl = (url) => {
+            const pattern = new RegExp('^(https?:\\/\\/)([\\w\\-]+\\.)+[\\w\\-]+(\\/[\\w\\-\\._~:\\/?#\\[\\]@!$&\'()*+,;=]*)?$', 'i');
+            return pattern.test(url);
+        };
 
+        // Validate images before uploading
+        const invalidImages = req.body.images.filter(image => !isValidUrl(image));
+        if (invalidImages.length > 0) {
+            return res.status(400).json({ error: "Invalid image URL(s)", invalidImages });
+        }
+
+        const limit = pLimit(2);
+        const imagesToUpload = req.body.images.map(image => limit(() => cloudinary.uploader.upload(image)));
+        
         const uploadResults = await Promise.all(imagesToUpload);
         const imgUrls = uploadResults.map(result => result.secure_url);
 
-        let product = new Product({
+        const product = new Product({
             name: req.body.name,
             description: req.body.description,
             images: imgUrls,
             brand: req.body.brand,
             oldPrice: req.body.oldPrice,
             price: req.body.price,
-            category: req.body.category,
+            category: categoryId,
             countInStock: req.body.countInStock,
             rating: req.body.rating,
-            // numReviews: req.body.numReviews,
             isFeatured: req.body.isFeatured,
         });
 
-        product = await product.save();
+        await product.save();
         res.status(201).send(product);
     } catch (err) {
-        res.status(500).json({
-            error: err.message,
-            success: false
-        });
+        console.error('Error creating product:', err);
+        res.status(500).json({ success: false, error: err.message || 'An error occurred while creating the product' });
     }
 });
+
+
+
+
 
 // Get product by ID
 

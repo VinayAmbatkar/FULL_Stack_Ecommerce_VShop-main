@@ -18,8 +18,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { FaRegImages } from "react-icons/fa";
-import { fetchDataFromApi } from '../../utils/api';
+import { fetchDataFromApi, postData } from '../../utils/api';
 import { MyContext } from '../../App';
+import { error } from 'jquery';
 
 //breadcrumb code
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -71,18 +72,16 @@ const ProductUpload = () => {
     const [formFields, setFormFields] = useState({
         name: '',
         description: '',
-        images: [],
+        // images: [],
         brand: '',
         price: 0,
         oldPrice: 0,
         category: '',
-        countInStock: 0,
+        countInStock: 0, // Ensure this is initialized
         rating: 0,
         isFeatured: false,
-
-
-
-    })
+    });
+    
 
 
     const productImages = useRef();
@@ -159,119 +158,155 @@ const ProductUpload = () => {
 
 
     };
-
-
+    
     const addProductImages = () => {
+        const trimmedImage = productImages.current.value.trim(); // Trim spaces
+        if (trimmedImage) { // Ensure it's not empty
+            setproductImagesArr(prevArray => [...prevArray, trimmedImage]);
+            productImages.current.value = ""; // Clear the input field
+        }
+    };
+    
 
-
-
-        setproductImagesArr(prevArray => [...prevArray, productImages.current.value]);
-    productImages.current.value = " ";
-}
-
-
-const addProduct = (e) => {
-
+    const addProduct = async (e) => {
     e.preventDefault();
+    
+    // Log the form fields before sending
+    console.log('Form Data:', { ...formFields, images: productImagesArr });
+    
+    try {
+        // Include images in formFields
+        const response = await postData('/api/products/create', { ...formFields, images: productImagesArr });
+        context.setAlertBox({
+            open: true,
+            msg: "The product is created!!",
+            error: false
+        });
 
-    formFields.images = productImagesArr
-    console.log(formFields)
+        // Reset form fields, but not product images
+        setFormFields({
+            name: '',
+            description: '',
+            brand: '',
+            price: 0,
+            oldPrice: 0,
+            category: '',
+            countInStock: 0,
+            rating: 0,
+            isFeatured: false,
+        });
 
+    } catch (error) {
+        console.error("Failed to create product:", error.response ? error.response.data : error.message);
+        context.setAlertBox({
+            open: true,
+            msg: "Failed to create product. Please try again.",
+            error: true
+        });
+    }
+};
 
-}
-
-const inputChage = (e) => {
-    setFormFields(() => ({
-        ...formFields,
-        [e.target.name]: e.target.value
-    }))
-
-}
-
-
-return (
-    <>
-        <div className="right-content w-100">
-            <div className="card shadow border-0 w-100 flex-row p-4 res-col">
-                <h5 className="mb-0">Product Upload</h5>
-                <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
-                    <StyledBreadcrumb
-                        component="a"
-                        href="#"
-                        label="Dashboard"
-                        icon={<HomeIcon fontSize="small" />}
-                    />
-
-                    <StyledBreadcrumb
-                        component="a"
-                        label="Products"
-                        href="#"
-                        deleteIcon={<ExpandMoreIcon />}
-                    />
-                    <StyledBreadcrumb
-                        label="Product Upload"
-                        deleteIcon={<ExpandMoreIcon />}
-                    />
-                </Breadcrumbs>
-            </div>
-            <form className='form' onSubmit={addProduct}>
-                <div className='row'>
-                    <div className='col-md-12'>
-                        <div className='card p-4 mt-0'>
-                            <h5 className='mb-4'>Basic Information</h5>
-
-                            <div className='form-group'>
-                                <h6>PRODUCT NAME</h6>
-                                <input type='text' name="name" onChange={inputChage} />
-                            </div>
-
-                            <div className='form-group'>
-                                <h6>DESCRIPTION</h6>
-                                <textarea rows={5} cols={10} name="description" onChange={inputChage} />
-                            </div>
+    
+    
+    
+    
 
 
-                            <div className='row'>
-                                <div className='col'>
-                                    <div className='form-group'>
-                                        <h6>CATEGORY</h6>
-                                        <Select
-                                            value={categoryVal}
-                                            onChange={handleChangeCategory}
-                                            displayEmpty
-                                            inputProps={{ 'aria-label': 'Without label' }}
-                                            className='w-100'
-                                        >
-                                            <MenuItem value="">
-                                                <em value={null}>None</em>
-                                            </MenuItem>
-                                            <MenuItem className="text-capitalize" value="Men"
-                                            >Men</MenuItem>
-                                            {
-                                                catData?.length !== 0 && catData?.categoryList?.map((cat, index) => {
-                                                    return (
-                                                        <MenuItem className='text-capitalize' value={cat.id}
-                                                            key={index}>{cat.name} </MenuItem>
-                                                    )
-                                                })
-                                            }
+    const inputChage = (e) => {
+        const { name, value } = e.target;
+        setFormFields((prevState) => ({
+            ...prevState,
+            [name]: name === 'countInStock' ? Number(value) : value, // Ensure it converts to number
+        }));
+    };
+    
 
 
-                                            <MenuItem className="text-capitalize"
-                                                value="Women"
-                                            >Women</MenuItem>
 
-                                            <MenuItem className="text-capitalize"
-                                                value="Kids"
-                                            >Kids</MenuItem>
 
-                                        </Select>
-                                    </div>
+    return (
+        <>
+            <div className="right-content w-100">
+                <div className="card shadow border-0 w-100 flex-row p-4 res-col">
+                    <h5 className="mb-0">Product Upload</h5>
+                    <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
+                        <StyledBreadcrumb
+                            component="a"
+                            href="#"
+                            label="Dashboard"
+                            icon={<HomeIcon fontSize="small" />}
+                        />
+
+                        <StyledBreadcrumb
+                            component="a"
+                            label="Products"
+                            href="#"
+                            deleteIcon={<ExpandMoreIcon />}
+                        />
+                        <StyledBreadcrumb
+                            label="Product Upload"
+                            deleteIcon={<ExpandMoreIcon />}
+                        />
+                    </Breadcrumbs>
+                </div>
+                <form className='form' onSubmit={addProduct}>
+                    <div className='row'>
+                        <div className='col-md-12'>
+                            <div className='card p-4 mt-0'>
+                                <h5 className='mb-4'>Basic Information</h5>
+
+                                <div className='form-group'>
+                                    <h6>PRODUCT NAME</h6>
+                                    <input type='text' name="name" value={formFields.name} onChange={inputChage} />
+                                </div>
+
+                                <div className='form-group'>
+                                    <h6>DESCRIPTION</h6>
+                                    <textarea rows={5} cols={10} name="description" value={formFields.description} onChange={inputChage} />
                                 </div>
 
 
+                                <div className='row'>
+                                    <div className='col'>
+                                        <div className='form-group'>
+                                            <h6>CATEGORY</h6>
+                                            <Select
+                                                value={categoryVal}
+                                                onChange={handleChangeCategory}
+                                                displayEmpty
+                                                inputProps={{ 'aria-label': 'Without label' }}
+                                                className='w-100'
+                                            >
+                                                <MenuItem value="">
+                                                    <em value={null}>None</em>
+                                                </MenuItem>
+                                                <MenuItem className="text-capitalize" value="Men"
+                                                >Men</MenuItem>
+                                                {
+                                                    catData?.length !== 0 && catData?.categoryList?.map((cat, index) => {
+                                                        return (
+                                                            <MenuItem className='text-capitalize' value={cat.id}
+                                                                key={index}>{cat.name} </MenuItem>
+                                                        )
+                                                    })
+                                                }
 
-                                <div className='col'>
+
+                                                <MenuItem className="text-capitalize"
+                                                    value="Women"
+                                                >Women</MenuItem>
+
+                                                <MenuItem className="text-capitalize"
+                                                    value="Kids"
+                                                >Kids</MenuItem>
+
+                                            </Select>
+                                        </div>
+                                    </div>
+
+
+
+                                    {/* <div className='col'>
                                     <div className='form-group'>
                                         <h6>SUB CATEGORY</h6>
                                         <Select
@@ -291,78 +326,84 @@ return (
 
                                         </Select>
                                     </div>
-                                </div>
+                                </div> */}
 
-                                <div className='col'>
-                                    <div className='form-group'>
-                                        <h6>PRICE</h6>
-                                        <input type='text' name="price" onChange={inputChage} />
+                                    <div className='col'>
+                                        <div className='form-group'>
+                                            <h6>PRICE</h6>
+                                            <input type='text' name="price"value={formFields.price} onChange={inputChage} />
+                                        </div>
                                     </div>
+
                                 </div>
 
-                            </div>
 
+                                <div className='row'>
 
-                            <div className='row'>
-
-                                <div className='col'>
-                                    <div className='form-group'>
-                                        <h6>OLD PRICE </h6>
-                                        <input type='text' name="oldPrice" onChange={inputChage} />
+                                    <div className='col'>
+                                        <div className='form-group'>
+                                            <h6>OLD PRICE </h6>
+                                            <input type='text' name="oldPrice"value={formFields.oldPrice} onChange={inputChage} />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className='col'>
-                                    <div className='form-group'>
-                                        <h6 className='text-uppercase'>is Featured </h6>
-                                        <Select
-                                            value={isFeaturedValue}
-                                            onChange={handleChangeisFeaturedValue}
-                                            displayEmpty
-                                            inputProps={{ 'aria-label': 'Without label' }}
-                                            className='w-100'
-                                        >
-                                            <MenuItem value="">
-                                                <em value={null}>None</em>
-                                            </MenuItem>
-                                            <MenuItem value={true}>True</MenuItem>
-                                            <MenuItem value={false}>False</MenuItem>
-                                        </Select>
+                                    <div className='col'>
+                                        <div className='form-group'>
+                                            <h6 className='text-uppercase'>is Featured </h6>
+                                            <Select
+                                                value={isFeaturedValue}
+                                                onChange={handleChangeisFeaturedValue}
+                                                displayEmpty
+                                                inputProps={{ 'aria-label': 'Without label' }}
+                                                className='w-100'
+                                            >
+                                                <MenuItem value="">
+                                                    <em value={null}>None</em>
+                                                </MenuItem>
+                                                <MenuItem value={true}>True</MenuItem>
+                                                <MenuItem value={false}>False</MenuItem>
+                                            </Select>
+                                        </div>
                                     </div>
-                                </div>
 
 
-                                <div className='col'>
-                                    <div className='form-group'>
-                                        <h6>PRODUCT STOCK </h6>
-                                        <input type='text' name="countInStock" onChange={inputChage} />
+                                    <div className='col'>
+                                        <div className='form-group'>
+                                            <h6>PRODUCT STOCK </h6>
+                                            <input
+                                                type='number'
+                                                name="countInStock"
+                                                value={formFields.countInStock || ''}
+                                                onChange={inputChage}
+                                            />
+
+                                        </div>
                                     </div>
+
                                 </div>
 
-                            </div>
 
 
+                                <div className='row'>
 
-                            <div className='row'>
-
-                                <div className='col-md-4'>
-                                    <div className='form-group'>
-                                        <h6>BRAND</h6>
-                                        <input type='text' name="brand" onChange={inputChage} />
+                                    <div className='col-md-4'>
+                                        <div className='form-group'>
+                                            <h6>BRAND</h6>
+                                            <input type='text' value={formFields.brand} name="brand" onChange={inputChage} />
+                                        </div>
                                     </div>
-                                </div>
 
 
 
-                                <div className='col-md-4'>
+                                    {/* <div className='col-md-4'>
                                     <div className='form-group'>
                                         <h6>DISCOUNT</h6>
                                         <input type='text' name="discount" />
                                     </div>
-                                </div>
+                                </div> */}
 
 
-                                <div className='col-md-4'>
+                                    {/* <div className='col-md-4'>
                                     <div className='form-group'>
                                         <h6>PRODUCT RAMS</h6>
                                         <Select
@@ -381,64 +422,64 @@ return (
                                             <MenuItem value="12GB" >12GB</MenuItem>
                                         </Select>
                                     </div>
+                                </div> */}
+
                                 </div>
 
-                            </div>
 
+                                <div className='row'>
 
-                            <div className='row'>
+                                    <div className='col-md-4'>
+                                        <div className='form-group'>
+                                            <h6>RATINGS</h6>
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={ratingsValue}
+                                                onChange={(event, newValue) => {
+                                                    setRatingValue(newValue);
+                                                    setFormFields(() => ({
+                                                        ...formFields,
+                                                        rating: newValue
+                                                    }))
+                                                }}
 
-                                <div className='col-md-4'>
-                                    <div className='form-group'>
-                                        <h6>RATINGS</h6>
-                                        <Rating
-                                            name="simple-controlled"
-                                            value={ratingsValue}
-                                            onChange={(event, newValue) => {
-                                                setRatingValue(newValue);
-                                                setFormFields(() => ({
-                                                    ...formFields,
-                                                    rating: newValue
-                                                }))
-                                            }}
-
-                                        />
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
+
+                                </div>
 
                             </div>
 
                         </div>
 
+                        <div className="col-sm-3" id='imgGrid'>
+
+                            {
+                                productImagesArr?.map((image, index) => {
+                                    return (
+                                        <div className='img' key={index}>
+                                            <img src={image} alt="image"
+                                                className='w-100' />
+                                        </div>
+
+                                    )
+                                })
+                            }
+
+
+                        </div>
                     </div>
 
-                    <div className="col-sm-3" id='imgGrid'>
-
-                        {
-                            productImagesArr?.map((image, index) => {
-                                return (
-                                    <div className='img' key={index}>
-                                        <img src={image} alt="image"
-                                            className='w-100' />
-                                    </div>
-
-                                )
-                            })
-                        }
-
-
-                    </div>
-                </div>
 
 
 
 
+                    <br />
 
-                <br />
 
-
-                {/* <div className='card p-4 mt-0'>
+                    {/* <div className='card p-4 mt-0'>
                         <div className="imagesUploadSec">
                             <h5 class="mb-4">Media And Published</h5>
 
@@ -477,26 +518,27 @@ return (
                         </div>
                     </div> */}
 
-                <div className="row">
-                    <div className="col">
-                        <div className="form-group">
-                            <h6 className='text-uppercase'>Product Images</h6>
-                            <div className="position-relative inputBtn">
-                                <input type="text" ref={productImages} style={{ paddingRight: "100px" }} name="countInStock" onChange={inputChage} />
-                                <Button className='btn-blue' onClick={addProductImages}>ADD</Button>
+                    <div className="row">
+                        <div className="col">
+                            <div className="form-group">
+                                <h6 className='text-uppercase'>Product Images</h6>
+                                <div className="position-relative inputBtn">
+                                    <input type="text" ref={productImages} style={{ paddingRight: "100px" }} name="countInStock" onChange={inputChage} />
+                                    <Button className='btn-blue' type="button" onClick={addProductImages}>ADD</Button>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <br />
+                    <br />
 
-                <Button type="submit" className="btn-blue btn-lg btn-big w-100"
-                ><FaCloudUploadAlt /> &nbsp; PUBLISH AND VIEW  </Button>
-            </form>
-        </div>
-    </>
-)
+                    <Button type="submit" className="btn-blue btn-lg btn-big w-100"
+                    ><FaCloudUploadAlt /> &nbsp; PUBLISH AND VIEW  </Button>
+                </form>
+            </div>
+        </>
+    )
 }
 
 export default ProductUpload;
