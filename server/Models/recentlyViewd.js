@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
-const productSchema = mongoose.Schema({
+const recentlyViewdSchema = mongoose.Schema({
+    prodId:{
+        type:String,
+        default:''
+    },
     name: {
         type: String,
         required: true,
@@ -31,19 +35,7 @@ const productSchema = mongoose.Schema({
         type:String,
         default:''
     },
-    catId:{
-        type:String,
-        default:''
-    },
     subCatId:{
-        type:String,
-        default:''
-    },
-    subCat:{
-        type:String,
-        default:''
-    },
-    subCatName:{
         type:String,
         default:''
     },
@@ -51,6 +43,10 @@ const productSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: true
+    },
+    subCat: {
+        type:String,
+        default:''
     },
     countInStock: {
         type: Number,
@@ -86,10 +82,6 @@ const productSchema = mongoose.Schema({
             default: null,
         }
     ],
-    location:{
-        type:String,
-        default:"All"
-    },
     dateCreated: {
         type: Date,
         default: Date.now,
@@ -97,12 +89,12 @@ const productSchema = mongoose.Schema({
 })
 
 
-productSchema.virtual('id').get(function () {
+recentlyViewdSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
-productSchema.set('toJSON', {
+recentlyViewdSchema.set('toJSON', {
     virtuals: true,
 });
 
-exports.Product = mongoose.model('Product', productSchema);
+exports.RecentlyViewd = mongoose.model('RecentlyViewd', recentlyViewdSchema);

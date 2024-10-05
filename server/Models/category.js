@@ -1,22 +1,29 @@
 const mongoose = require('mongoose');
 
-const categorySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
+
+
+const categorySchema = mongoose.Schema({
+    name:{
+        type:String,
+        required:true
     },
-    images: [
+    slug:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    images:[
         {
-            type: String,
-            required: true,
-        },
+            type:String,
+        }
     ],
-    color: {
-        type: String,
-        required: true,
+    color:{
+        type:String,
     },
-});
+    parentId:{
+        type:String
+    }
+},{timestamps:true})
 
 categorySchema.virtual('id').get(function () {
     return this._id.toHexString();
@@ -26,6 +33,5 @@ categorySchema.set('toJSON', {
     virtuals: true,
 });
 
-const Category = mongoose.model('Category', categorySchema);
-
-module.exports = { Category, categorySchema };
+exports.Category = mongoose.model('Category', categorySchema);
+exports.categorySchema = categorySchema;
