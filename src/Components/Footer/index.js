@@ -146,7 +146,7 @@ const footer = () => {
 
 
         <div className="copyright mt-3 pt-3 pb-3 d-flex">
-          <p className='mb-0'> Developed By Vinay Ambatkar 💖 All rights reserved.</p>
+          <p className='mb-0'> Developed By Akansha Salwan 💖 All rights reserved.</p>
           <ul className='list list-inline ml-auto mb-0 md-10' >
             <li className='list-inline-item'>
               <Link to="#"> <FaFacebookF /></Link>
