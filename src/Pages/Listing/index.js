@@ -1,136 +1,123 @@
-import React from 'react';
-import Sidebar from '../../Components/Sidebar';
-import Button from '@mui/material/Button';
-import { CiMenuBurger } from "react-icons/ci";
-import { CgMenuGridR } from "react-icons/cg";
-import { PiDotsSixBold } from "react-icons/pi";
-import { HiViewGrid } from "react-icons/hi";
-import { FaAngleDown } from "react-icons/fa6";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ProductsItem from '../../Components/ProductsItems';
-import Pagination from '@mui/material/Pagination';
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { apiRequest } from "../../api";
+import { useShop } from "../../ShopContext";
+import ProductsItem from "../../Components/ProductsItems";
 
+export default function Listing() {
+  const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pathname = useLocation().pathname;
+  const [searchText, setSearchText] = useState(searchParams.get("q") || "");
+  const { location } = useShop();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-
-const Listing = () => {
-
-    // open closed menu
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [productView, setProductView] = React.useState('four');
-    const openDropdown = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    const params = new URLSearchParams({
+      page: "1",
+      perPage: "100",
+      location,
+    });
+    apiRequest(`/api/products?${params}`)
+      .then((result) => {
+        if (active) setProducts(Array.isArray(result?.products) ? result.products : []);
+      })
+      .catch((requestError) => {
+        if (!active) return;
+        console.error("Unable to load products.", requestError);
+        setError(requestError.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
     };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  }, [location]);
 
+  const query = (searchParams.get("q") || "").trim().toLowerCase();
+  const category = (searchParams.get("category") || "").toLowerCase();
+  const filteredProducts = useMemo(
+    () =>
+      products.filter((product) => {
+        const matchesQuery =
+          !query ||
+          `${product.name} ${product.description} ${product.catName}`
+            .toLowerCase()
+            .includes(query);
+        const matchesCategory =
+          !category ||
+          `${product.catName} ${product.subCatName}`.toLowerCase() === category;
+        const matchesRouteCategory =
+          !id ||
+          product.catId === id ||
+          product.subCatId === id ||
+          product.category?._id === id ||
+          product.catName?.toLowerCase() === id.toLowerCase();
+        return matchesQuery && matchesCategory && matchesRouteCategory;
+      }),
+    [products, query, category, id]
+  );
 
+  const title = query
+    ? `Search results for “${query}”`
+    : category || filteredProducts[0]?.catName || "Shop products";
+  const submitSearch = (event) => {
+    event.preventDefault();
+    const next = new URLSearchParams(searchParams);
+    if (searchText.trim()) next.set("q", searchText.trim());
+    else next.delete("q");
+    setSearchParams(next);
+  };
 
+  return (
+    <section className="storePageSection">
+      <div className="container">
+        <div className="storeBreadcrumb">Home <span>/</span> {title}</div>
+        <div className="storeListingHeading">
+          <div>
+            <span className="eyebrow">Discover something good</span>
+            <h1>{title}</h1>
+            <p>{filteredProducts.length} products</p>
+          </div>
+          {pathname === "/search" && (
+            <form className="pageSearchForm" onSubmit={submitSearch}>
+              <input
+                aria-label="Search products"
+                placeholder="Search for products..."
+                value={searchText}
+                onChange={(event) => setSearchText(event.target.value)}
+              />
+              <button type="submit">Search</button>
+            </form>
+          )}
+        </div>
 
-    return (
-        <>
-
-            <section className="product_Listing_Page">
-
-                <div className="container">
-                    <div className="productListing d-flex">
-                        <Sidebar />
-
-                        <div className="content_right">
-
-                            <img src="https://github.com/rinkuv37/fullstack-ecommerce/blob/main/images/slideBanner2.jpg?raw=true" alt="" className='w-100' style={{ borderRadius: '8px' }} />
-
-                            <div className="showBy mt-3 mb-3 d-flex align-items-center">
-                                <div className=" d-flex align-items-center btnWrapper">
-                                    <Button className={productView === 'four' && 'act'} onClick={() => setProductView('four')}><PiDotsSixBold /></Button>
-                                    <Button className={productView === 'three' && 'act'} onClick={() => setProductView('three')}><CgMenuGridR /></Button>
-                                    <Button className={productView === 'two' && 'act'} onClick={() => setProductView('two')}><HiViewGrid /></Button>
-                                    <Button className={productView === 'one' && 'act'} onClick={() => setProductView('one')}><CiMenuBurger /></Button>
-
-
-
-
-                                </div>
-
-                                <div className="ml-auto showByFilter">
-                                    <Button onClick={handleClick}> Show 9 <FaAngleDown /></Button>
-                                    <Menu
-                                        className='w-10 showPerPageDropdown'
-                                        id="basic-menu"
-                                        anchorEl={anchorEl}
-                                        open={openDropdown}
-                                        onClose={handleClose}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'left',
-                                        }}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'left',
-                                        }}
-                                    >
-                                        <MenuItem onClick={handleClose}>10</MenuItem>
-                                        <MenuItem onClick={handleClose}>20</MenuItem>
-                                        <MenuItem onClick={handleClose}>30</MenuItem>
-                                        <MenuItem onClick={handleClose}>40</MenuItem>
-                                        <MenuItem onClick={handleClose}>50</MenuItem>
-
-
-                                    </Menu>
-                                </div>
-
-
-                            </div>
-
-                            <div className="productListing">
-                                <ProductsItem itemView={productView} />   {/* Passing the Props to the component */}
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-                                <ProductsItem itemView={productView} />
-
-                                <ProductsItem itemView={productView} />
-
-                                <ProductsItem itemView={productView} />
-
-
-                            </div>
-
-                            {/* Pagination */}
-
-                            <div className="d-flex align-items-center justify-content-center mt-3">
-                                <Pagination count={10} color="primary" size="large" />
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-
-
-
-                </div>
-            </section>
-
-
-
-
-
-
-
-
-
-
-        </>
-    )
+        {error && (
+          <div className="storeError" role="alert">
+            Products could not be loaded: {error}
+          </div>
+        )}
+        {loading ? (
+          <p className="storeEmptyHint">Loading products…</p>
+        ) : filteredProducts.length ? (
+          <div className="storeProductGrid">
+            {filteredProducts.map((product) => (
+              <ProductsItem key={product._id || product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="storeEmptyState">
+            <span aria-hidden="true">🔎</span>
+            <h2>No products found</h2>
+            <p>Try a different search or browse all products.</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
-
-export default Listing;

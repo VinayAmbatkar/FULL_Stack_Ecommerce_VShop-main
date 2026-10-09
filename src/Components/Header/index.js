@@ -1,77 +1,89 @@
-import { Link } from "react-router-dom";
-import Logo from '../../assets/images/logo.png';
+import { Button } from "@mui/material";
+import { FaGithub } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
+import { FaRegHeart, FaRegUser } from "react-icons/fa";
+import { IoHomeOutline, IoSearchOutline } from "react-icons/io5";
+import { MdOutlineReceiptLong } from "react-icons/md";
+import { Link, NavLink } from "react-router-dom";
+import { useShop } from "../../ShopContext";
+import Logo from "../../assets/images/logo-build.jpg";
 import CountryDropdown from "./CountryDropdown";
-import { FaRegUser } from "react-icons/fa";
-import { BsCart } from "react-icons/bs";
 import Searchbox from "./SearchBox";
 import Navigation from "./Navigation";
-import { Button } from "@mui/material";
-import { MyContext } from "../../App";
-import { useContext } from "react";
 
-const Header = () => {
-  // Get the context values using the useContext hook
-  const { isLogin } = useContext(MyContext);
+function MobileNavigation() {
+  return (
+    <nav className="mobileBottomNav" aria-label="Mobile navigation">
+      <NavLink to="/" end>
+        <IoHomeOutline />
+        <span>Home</span>
+      </NavLink>
+      <NavLink to="/search">
+        <IoSearchOutline />
+        <span>Search</span>
+      </NavLink>
+      <NavLink to="/my-list">
+        <FaRegHeart />
+        <span>Wishlist</span>
+      </NavLink>
+      <NavLink to="/orders">
+        <MdOutlineReceiptLong />
+        <span>Orders</span>
+      </NavLink>
+      <NavLink to="/my-account">
+        <FaRegUser />
+        <span>Account</span>
+      </NavLink>
+    </nav>
+  );
+}
+
+export default function Header() {
+  const { cartCount, user } = useShop();
 
   return (
     <>
-      <div className="headerWrapper">
-        <div className="top-strip bg-blue">
+      <header className="storeHeader">
+        <div className="storeAnnouncement">
           <div className="container">
-            <p className="mb-0 mt-0 text-center">
-              <marquee>Your Local E-Commerce Hub for Wardha and Sawangi</marquee>
-            </p>
+            <span>⭐ If you like the project, give it a star on GitHub ⭐</span>
           </div>
         </div>
-
-        <header className="header">
-          <div className="container">
-            <div className="row">
-              <div className="logoWrapper col-sm-2 d-flex align-items-center">
-                <Link to={'/'}><img src={Logo} alt='logo' /></Link>
-              </div>
-              <div className="col-sm-10 d-flex align-items-center part2">
-                <CountryDropdown />
-
-                {/* Header Search Starts Here */}
-                <Searchbox />
-                {/* Header Search Ends Here */}
-                <div className="part3 d-flex align-items-center ml-auto">
-                  
-                  {/* Conditional rendering based on login status */}
-                  {isLogin !== true ? (
-                    <Link to={'/sigIn'}><Button className="btn-blue btn-lg btn-big btn-round mr-3">
-                      Sign In
-                    </Button>
-                
-                    
-                    </Link>
-                    
-
-                
-                  ) : (
-                    <Button className="circle mr-3">
-                      <FaRegUser />
-                    </Button>
-                  )}
-                  
-                  <div className="ml-auto cartTab d-flex align-items-center">
-                    <span className="price">$ 1000</span>
-                    <div className="position-relative ml-2">
-                   <Link to={'/cart'}> <Button className="circle"><BsCart /></Button></Link>  
-                      <span className="count d-flex align-items-center justify-content-center">0</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+        <div className="container storeHeaderMain">
+          <Link to="/" className="storeLogo" aria-label="VShop home">
+            <img src={Logo} alt="VShop" />
+          </Link>
+          <CountryDropdown />
+          <Searchbox />
+          <div className="storeHeaderActions">
+            <a
+              className="githubLink"
+              href="https://github.com/"
+              aria-label="GitHub"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaGithub />
+            </a>
+            {user ? (
+              <Link className="headerAccountLink" to="/my-account">
+                <FaRegUser />
+                <span>My Account</span>
+              </Link>
+            ) : (
+              <Link className="headerSignIn" to="/signIn">
+                <Button className="btn-blue btn-round">Sign In</Button>
+              </Link>
+            )}
+            <Link className="headerCart" to="/cart" aria-label={`Cart, ${cartCount} items`}>
+              <BsCart3 />
+              <span className="headerCartCount">{cartCount}</span>
+            </Link>
           </div>
-        </header>
+        </div>
         <Navigation />
-      </div>
+      </header>
+      <MobileNavigation />
     </>
-  )
+  );
 }
-
-export default Header;

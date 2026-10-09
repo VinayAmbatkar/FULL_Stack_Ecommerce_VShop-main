@@ -1,19 +1,28 @@
-import { Button } from '@mui/material';
-import React from 'react'
-import { IoSearchSharp } from "react-icons/io5";
+import { useState } from "react";
+import { IoSearchOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
+export default function Searchbox() {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
-const Searchbox = () => {
+  const search = (event) => {
+    event.preventDefault();
+    const value = query.trim();
+    if (value) navigate(`/search?q=${encodeURIComponent(value)}`);
+  };
+
   return (
-    <div>
-      <div className="headerSearch ml-3 mr-3">
-                  <input type="text" placeholder="Search for Products" />
-                  <Button><IoSearchSharp /> </Button>
-                </div>
-    </div>
-    
-    
-  )
+    <form className="storeSearch" onSubmit={search} role="search">
+      <input
+        aria-label="Search for products"
+        placeholder="Search for products..."
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
+      <button type="submit" aria-label="Search">
+        <IoSearchOutline />
+      </button>
+    </form>
+  );
 }
-
-export default Searchbox ;

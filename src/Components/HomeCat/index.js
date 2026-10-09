@@ -1,106 +1,57 @@
-import React from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
+import { Link } from "react-router-dom";
 
-const HomeCat = () => {
+const defaults = [
+  { name: "Fashion", icon: "👗" },
+  { name: "Fruits", icon: "🍓" },
+  { name: "Books", icon: "📚" },
+  { name: "Grocery", icon: "🛒" },
+  { name: "Electronics", icon: "📱" },
+  { name: "Beverage", icon: "🥤" },
+  { name: "Gym", icon: "🏋️" },
+  { name: "Trending Products", icon: "📈" },
+];
 
-
-    return (
-
-        <section>
-
-            <div className="homeCat">
-                <div className="container mt-2 cursor">
-                    <h3 className='mb-3 hd'>Features Categories</h3>
-                    <Swiper
-                        slidesPerView={7}
-                        spaceBetween={5}
-                        navigation={true}
-                        slidesPerGroup={1}
-                        modules={[Navigation]}
-                        className="mySwiper"
-                    >
-
-
-                        <SwiperSlide>
-                            <div className="item text-center cursor">
-                                <img src='https://cdn-icons-png.flaticon.com/512/12516/12516451.png' alt="Fashion" />
-                                <h6 className='mt-2'>Fashion</h6>
-                            </div>
-
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/3659/3659898.png" alt="Electronics" />
-                                <h6 className='mt-2'>Electronics</h6>
-                            </div>
-
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/2203/2203183.png" alt="grocery" />
-                                <h6 className='mt-2'>Grocery</h6>
-                            </div>
-
-                        </SwiperSlide><SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/5832/5832416.png" alt="Books" />
-                                <h6 className='mt-2'>Books</h6>
-                            </div>
-
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/10605/10605926.png" alt="Wellnes" />
-                                <h6 className='mt-2'>Wellness</h6>
-                            </div>
-
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/1062/1062283.png" alt="Phones and Tabs" />
-                                <h6 className='mt-2'>Phones and Tabs</h6>
-                            </div>
-
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/3976/3976194.png" alt="Home  & Kitchen" />
-                                <h6 className='mt-2'>Home  & Kitchen</h6>
-                            </div>
-
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/1940/1940922.png" alt="Beauty & health" />
-                                <h6 className='mt-2'>Beauty & health</h6>
-                            </div>
-
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://cdn-icons-png.flaticon.com/512/17128/17128447.png" alt="Top Offers" />
-                                <h6 className='mt-2'>Top Offers</h6>
-                            </div>
-
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <div className="item text-center">
-                                <img src="https://nest-frontend-v6.netlify.app/assets/imgs/shop/cat-15.png" alt="Head Phones" />
-                                <h6 className='mt-2'>Head Phones</h6>
-                            </div>
-
-                        </SwiperSlide>
-                    </Swiper>
-                </div>
-            </div>
-
-        </section>
-    )
+function flattenCategories(categories) {
+  return categories.reduce((items, category) => {
+    items.push(category);
+    if (Array.isArray(category.children)) {
+      items.push(...flattenCategories(category.children));
+    }
+    return items;
+  }, []);
 }
 
-export default HomeCat;
+export default function HomeCat({ categories = [] }) {
+  const items = flattenCategories(categories).slice(0, 8);
+  const visibleCategories = items.length ? items : defaults;
+
+  return (
+    <section className="featuredCategories">
+      <div className="container">
+        <h2>FEATURED CATEGORIES</h2>
+        <div className="categoryCardRow">
+          {visibleCategories.map((category, index) => {
+            const name = category.name || category.catName || "Category";
+            const id = category._id || category.id || name;
+            return (
+              <Link
+                className="categoryCard"
+                to={`/products/category/${encodeURIComponent(id)}`}
+                key={id}
+              >
+                <span className="categoryCardIcon" aria-hidden="true">
+                  {category.images?.[0] ? (
+                    <img src={category.images[0]} alt="" />
+                  ) : (
+                    defaults[index % defaults.length].icon
+                  )}
+                </span>
+                <span>{name}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

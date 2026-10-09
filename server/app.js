@@ -19,9 +19,17 @@ app.use(bodyParser.json());
 
 const categoriesRoutes = require('./Routes/categories');
 const productsRoutes = require('./Routes/products');
+const usersRoutes = require('./Routes/user');
+const cartRoutes = require('./Routes/cart');
+const myListRoutes = require('./Routes/myList');
+const ordersRoutes = require('./Routes/orders');
 
 app.use(`/api/category`, categoriesRoutes);
 app.use(`/api/products`, productsRoutes);
+app.use(`/api/user`, usersRoutes);
+app.use(`/api/cart`, cartRoutes);
+app.use(`/api/my-list`, myListRoutes);
+app.use(`/api/orders`, ordersRoutes);
 
 //DATABASE
 
@@ -40,6 +48,5 @@ mongoose.connect(process.env.CONNECTION_STRING, {
     .catch((err) => {
         console.log(err);
     });
-
 
 

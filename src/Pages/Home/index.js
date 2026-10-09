@@ -1,198 +1,162 @@
-import React from 'react'
-import HomeBanner from '../../Components/HomeBanner';
-import slideBanner2 from '../../assets/images/Banners/bottomBanner.gif';
-import { Button } from '@mui/material';
-import { FaArrowRightLong } from "react-icons/fa6";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
-import Rating from '@mui/material/Rating';
-import { SlSizeFullscreen } from "react-icons/sl";
-import ProductsItem from '../../Components/ProductsItems';
-import { FaRegHeart } from "react-icons/fa6";
-import Banner2 from '../../assets/images/Banners/banner2.jpg';
-import HomeCat from '../../Components/HomeCat';
-import banner3 from '../../assets/images/Banners/Banner3.png'
-import Coupan from '../../assets/images/Coupon.png'
-import { BsBell } from "react-icons/bs";
-
-
-
-const Home = () => {
-
-    var ProductSliderOptions = {
-        dots: true,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 1
-    };
-
-    return (
-        <>
-            <HomeBanner />
-
-            {/* category section blocks  */}
-
-            <HomeCat />
-
-            {/* category section blocks ENds  */}
-
-
-
-
-
-
-            <section className="homeProducts">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-3">
-
-                            <div className="sticky">
-                                <div className="banner">
-                                    <img src={slideBanner2} className='cursor w-100' />
-                                </div>
-                                <div className="banner mt-4">
-
-                                    <img src={Banner2} className='cursor w-100' />
-
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                        <div className="col-md-9 productRow">
-
-
-                            <div className="d-flex align-items-center">
-                                <div className="info">
-                                    <h3 className='mb-0 hd'>BEST SELLERS</h3>
-                                    <p className='text-light text-sml mb-0'>Do not Miss the current offers until the End of Month</p>
-
-                                </div>
-
-                                <Button className='viewAllBtn ml-auto'>View All<FaArrowRightLong /></Button>
-
-
-                            </div>
-
-
-                            <div className="product_row w-100 mt-4 display:flex">
-                                <Swiper
-                                    slidesPerView={4}
-                                    spaceBetween={0}
-                                    navigation={true}
-                                    modules={[Navigation]}
-                                    className="mySwiper"
-                                >
-
-
-                                    <SwiperSlide> <ProductsItem /></SwiperSlide>
-
-                                    <SwiperSlide><ProductsItem /> </SwiperSlide>
-                                    <SwiperSlide><ProductsItem /> </SwiperSlide>
-                                    <SwiperSlide><ProductsItem /> </SwiperSlide>
-
-
-                                   
-
-                                </Swiper>
-
-
-
-                            </div>
-
-
-
-                            {/* New Product  section */}
-
-                            <div className="d-flex align-items-center mt-5">
-                                <div className="info">
-                                    <h3 className='mb-0 hd'>NEW PRODUCTS</h3>
-                                    <p className='text-light text-sml mb-0'>New Fresh Products in your Local Areas </p>
-
-                                </div>
-
-                                <Button className='viewAllBtn ml-auto'>View All<FaArrowRightLong /></Button>
-
-
-                            </div>
-
-
-                            <div className="productRow2 w-100 mt-4 d-flex">
-
-
-                                <ProductsItem />
-                                <ProductsItem />
-                                <ProductsItem />
-
-
-
-                            </div>
-
-                            <div className="productRow2 w-100 mt-4 d-flex">
-
-
-                                <ProductsItem />
-                                <ProductsItem />
-                                <ProductsItem />
-
-
-
-                            </div>
-
-
-                            <div className="d-flex mb-4 mb-5 bannerSection">
-                                <div className="banner mt-4">
-
-                                    <img src={banner3} alt="" />
-                                </div>
-
-                                <div className="banner mt-4">
-
-                                    <img src={banner3} alt="" />
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-
-            </section>
-
-
-            <section className='newsLatterSection mt-3 mb-3 d-flex align-items-center'>
-                <div className="container">
-                    <div className="row">
-
-                        <div className="col-md-6">
-                            <p className='text-white mb-0'>20% Discount for Your First Order </p>
-                            <h3>Join our E-commerce Platform for Daily Updated In your Area </h3>
-                            <p className='text-light'>Join our email subscription now to get updates<br /> on promotions and coupons</p>
-
-                        </div>
-                        <div className="col-md-6">
-                            <img src={Coupan} alt="" />
-                        </div>
-                    </div>
-                    <form>
-                    <BsBell />
-                        <input type="text" placeholder='Enter Your Email Address ' />
-                        <Button>Subscribe</Button>
-                    </form>
-
-                </div>
-            </section>
-
-            
-
-
-        </>
-    )
+import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import HomeBanner from "../../Components/HomeBanner";
+import HomeCat from "../../Components/HomeCat";
+import ProductsItem from "../../Components/ProductsItems";
+import { apiRequest } from "../../api";
+import { useShop } from "../../ShopContext";
+import newsletterArt from "../../assets/images/newsletter.png";
+import banner from "../../assets/images/Banners/Banner3.png";
+
+function getItems(result) {
+  if (Array.isArray(result)) return result;
+  if (Array.isArray(result?.products)) return result.products;
+  return [];
 }
 
-export default Home;
+export default function Home() {
+  const { location } = useShop();
+  const [categories, setCategories] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [newProducts, setNewProducts] = useState([]);
+  const [errors, setErrors] = useState([]);
+  const [email, setEmail] = useState("");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    const locationParam = encodeURIComponent(location);
+
+    Promise.all([
+      apiRequest("/api/category"),
+      apiRequest(`/api/products/featured?location=${locationParam}`),
+      apiRequest(`/api/products?page=1&perPage=8&location=${locationParam}`),
+    ])
+      .then(([categoryResult, featuredResult, productsResult]) => {
+        if (!active) return;
+        setCategories(categoryResult?.categoryList || []);
+        setFeaturedProducts(getItems(featuredResult));
+        setNewProducts(getItems(productsResult));
+        setErrors([]);
+      })
+      .catch((error) => {
+        if (!active) return;
+        console.error("Unable to load storefront content.", error);
+        setErrors([error.message]);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [location]);
+
+  const subscribe = (event) => {
+    event.preventDefault();
+    setNewsletterMessage(
+      email.trim()
+        ? "Newsletter signups are not connected yet."
+        : "Enter your email address to continue."
+    );
+  };
+
+  return (
+    <>
+      <HomeBanner />
+      <HomeCat categories={categories} />
+
+      <section className="homeProducts buildHomeProducts">
+        <div className="container">
+          <div className="homeSectionHeading">
+            <div>
+              <span className="eyebrow">Tranding Products</span>
+              <h2>POPULAR PRODUCTS</h2>
+              <p>Do not miss the current offers until the end of March.</p>
+            </div>
+            <Link to="/search" className="viewAllLink">
+              View All <span aria-hidden="true">›</span>
+            </Link>
+          </div>
+
+          {errors.length > 0 && (
+            <div className="storeError" role="alert">
+              Products could not be loaded: {errors.join(", ")}. Check that the
+              server is running and the database is connected.
+            </div>
+          )}
+
+          {featuredProducts.length > 0 ? (
+            <div className="storeProductGrid popularProductGrid">
+              {featuredProducts.slice(0, 8).map((product) => (
+                <ProductsItem key={product._id || product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            !errors.length && (
+              <p className="storeEmptyHint">
+                Featured products will appear here when available.
+              </p>
+            )
+          )}
+
+          <div className="homeSectionHeading newProductHeading">
+            <div>
+              <span className="eyebrow">Just landed</span>
+              <h2>NEW PRODUCTS</h2>
+              <p>New products with updated stocks.</p>
+            </div>
+            <Link to="/search" className="viewAllLink">
+              View All <span aria-hidden="true">›</span>
+            </Link>
+          </div>
+          {newProducts.length > 0 ? (
+            <div className="storeProductGrid">
+              {newProducts.slice(0, 8).map((product) => (
+                <ProductsItem key={product._id || product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            !errors.length && (
+              <p className="storeEmptyHint">No new products are available.</p>
+            )
+          )}
+
+          <div className="homePromoBanner">
+            <img src={banner} alt="Shop the latest VShop offers" />
+          </div>
+        </div>
+      </section>
+
+      <section className="newsletterSection">
+        <div className="container newsletterInner">
+          <div>
+            <span className="eyebrow">20% discount for your first order</span>
+            <h2>Join our newsletter and get more</h2>
+            <p>Get updates on promotions and coupons.</p>
+            <form onSubmit={subscribe} className="newsletterForm">
+              <label className="sr-only" htmlFor="newsletter-email">
+                Your email address
+              </label>
+              <input
+                id="newsletter-email"
+                type="email"
+                placeholder="Your Email Address"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+              <Button type="submit" className="btn-blue btn-round">
+                Subscribe
+              </Button>
+            </form>
+            {newsletterMessage && (
+              <p className="newsletterMessage" role="status">
+                {newsletterMessage}
+              </p>
+            )}
+          </div>
+          <img className="newsletterArt" src={newsletterArt} alt="" />
+        </div>
+      </section>
+    </>
+  );
+}

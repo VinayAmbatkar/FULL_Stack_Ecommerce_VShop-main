@@ -1,4 +1,21 @@
-# Getting Started with Create React App
+# VShop Storefront
+
+## Run locally
+
+1. Copy `.env.example` to `.env` in the project root. Set
+   `REACT_APP_API_BASE_URL` to the backend origin (the local default is
+   `http://localhost:5000`).
+2. Configure `server/.env` using `server/.env.example`. Set a private,
+   random `JSON_WEB_TOKEN_SECRET_KEY`; do not commit real credentials.
+3. Start the API from `server` with `npm.cmd start`, then start the storefront
+   from the project root with `npm.cmd start`.
+
+The storefront uses the API for product browsing, account sign-in, password
+changes, and orders. Cart and saved-list contents are stored in this browser.
+Online payment and newsletter subscription need provider/API configuration and
+are not active yet.
+
+## Create React App scripts
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

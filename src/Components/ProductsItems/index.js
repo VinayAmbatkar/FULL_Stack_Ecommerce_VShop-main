@@ -1,70 +1,73 @@
-import React from 'react'
-import Rating from '@mui/material/Rating';
-import { SlSizeFullscreen } from "react-icons/sl";
-import { Button } from '@mui/material';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { FaRegHeart } from "react-icons/fa6";
-import ProductModal from '../ProductModal';
+import Rating from "@mui/material/Rating";
+import { Button } from "@mui/material";
+import { FaRegHeart } from "react-icons/fa";
+import { FaCartPlus } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { formatPrice, getProductImage } from "../../api";
+import { useShop } from "../../ShopContext";
 
+export default function ProductsItem({ product, itemView = "four" }) {
+  const { addToCart, myList, toggleMyList } = useShop();
+  if (!product) return null;
 
-const ProductsItem = (props) => {
-
-const [isOpenProductModal, setIsOpenProductModal] = React.useState(false);
-  const viewProductDetails = (id) => {
-    setIsOpenProductModal(true);
-  }
-
-
-const closeProductModal=() =>{
-
-  setIsOpenProductModal(false);
-}
-
-
+  const id = product._id || product.id;
+  const price = Number(product.price) || 0;
+  const oldPrice = Number(product.oldPrice) || 0;
+  const discount =
+    Number(product.discount) ||
+    (oldPrice > price && oldPrice > 0
+      ? Math.round(((oldPrice - price) / oldPrice) * 100)
+      : 0);
+  const isSaved = myList.some((item) => (item._id || item.id) === id);
+  const stock = Number(product.countInStock) || 0;
 
   return (
-   <>
-    
-
-<div className={`productItem ${props.itemView}`}>
-  <div className="imageWrapper">
-    <img src="https://754969b0.rocketcdn.me/bacola/wp-content/uploads/2021/04/product-image-62-768x691.jpg" className='w-100' />
-
-
-    <span className='badge badge-primary'>28%</span>
-    <div className="actions">
-
-      <Button onClick={()=>viewProductDetails(1)}><SlSizeFullscreen /></Button>
-      <Button><FaRegHeart style={{fontSize:"20px"}} /></Button>
-    </div>
-
-  </div>
-  <div className="info">
-
-    <h4>Fresh Brown Coconut</h4>
-    <span className='text-success d-block'>In Stock</span>
-    <Rating className='mt-2 mb-2 ' name="read-only" value={5} readOnly size='small' precision={0.5} />
-
-    <div className="d-flex">
-      <span className='oldPrice'>40 Rs</span>
-      <span className='netPrice text-danger ml-3'>30Rs</span>
-    </div>
-  </div>
-
-</div>
-
-{
-
-isOpenProductModal===true && <ProductModal  closeProductModal= {closeProductModal} />                                                   
+    <article className={`productItem buildProductItem ${itemView}`}>
+      <div className="productImageFrame">
+        <Link to={`/product/${id}`} className="productImageLink">
+          <img src={getProductImage(product)} alt={product.name || "Product"} />
+        </Link>
+        {discount > 0 && <span className="productDiscount">{discount}%</span>}
+        <button
+          className={`productWishlistButton${isSaved ? " isSaved" : ""}`}
+          type="button"
+          onClick={() => toggleMyList(product)}
+          aria-label={isSaved ? "Remove from wishlist" : "Add to wishlist"}
+          aria-pressed={isSaved}
+        >
+          <FaRegHeart />
+        </button>
+      </div>
+      <div className="productCardInfo">
+        <Link to={`/product/${id}`} className="productTitle">
+          {product.name}
+        </Link>
+        <span className={stock > 0 ? "productStock" : "productStock outOfStock"}>
+          {stock > 0 ? "In Stock" : "Out of stock"}
+        </span>
+        <Rating
+          name={`rating-${id}`}
+          value={Number(product.rating) || 0}
+          readOnly
+          size="small"
+          precision={0.5}
+        />
+        <div className="productPriceRow">
+          {oldPrice > price && (
+            <span className="productOldPrice">{formatPrice(oldPrice)}</span>
+          )}
+          <strong>{formatPrice(price)}</strong>
+        </div>
+        <Button
+          className="productAddButton"
+          onClick={() => addToCart(product)}
+          disabled={stock < 1}
+          aria-label={`Add ${product.name} to cart`}
+        >
+          <FaCartPlus />
+          <span>Add to cart</span>
+        </Button>
+      </div>
+    </article>
+  );
 }
-
-
-   
-   </>
-    
-    
-  )
-}
-
-export default ProductsItem;

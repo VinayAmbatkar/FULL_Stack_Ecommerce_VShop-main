@@ -1,117 +1,137 @@
-import React, { useEffect, useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
-import { MyContext } from '../../App';
-import GoogleImg from '../../assets/images/google.png';
+import { useContext, useState } from "react";
+import { Button } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { MyContext } from "../../App";
+import { apiRequest } from "../../api";
+import { useShop } from "../../ShopContext";
 
-const SignIn = () => {
+export default function SignIn({ initialMode = "signin" }) {
+  const [isSignIn, setIsSignIn] = useState(initialMode !== "signup");
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const { setIsLogin } = useContext(MyContext);
+  const { saveUser } = useShop();
+  const navigate = useNavigate();
 
-    // My context 
-    const context = React.useContext(MyContext);
-    
-    // State to toggle between Sign In and Sign Up
-    const [isSignIn, setIsSignIn] = useState(true);
-    
-    useEffect(() => {
-        context.setIsHeaderFooterShow(true);
-    }, []);
+  const update = (event) =>
+    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
 
-    return (
-        <section className="section signInPage">
-            <div className="container">
-                <div className="box card p-3 shadow border-0">
-                    <form className='mt-2'>
-                        <h2 className='mb-3'>{isSignIn ? 'Sign In' : 'Sign Up'}</h2>
+  const submit = async (event) => {
+    event.preventDefault();
+    setError("");
+    if (!isSignIn && form.password !== form.confirmPassword) {
+      setError("Password and confirmation do not match.");
+      return;
+    }
 
-                        {!isSignIn && (
-                            <div className="form-group">
-                                <TextField
-                                    id="signup-name"
-                                    label="Full Name"
-                                    required
-                                    placeholder="Enter Your Name"
-                                    variant="standard"
-                                    type='text'
-                                    className="w-100"
-                                />
-                            </div>
-                        )}
+    setSubmitting(true);
+    try {
+      const result = await apiRequest(`/api/user/${isSignIn ? "signin" : "signup"}`, {
+        method: "POST",
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          password: form.password,
+        }),
+      });
 
-                        <div className="form-group">
-                            <TextField
-                                id={isSignIn ? "standard-email" : "signup-email"}
-                                label="Email"
-                                required
-                                placeholder="Enter Your Email"
-                                variant="standard"
-                                type='email'
-                                className="w-100"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <TextField
-                                id={isSignIn ? "standard-password" : "signup-password"}
-                                label="Password"
-                                required
-                                placeholder="Enter Your Password"
-                                variant="standard"
-                                type='password'
-                                className="w-100"
-                            />
-                        </div>
+      if (!result?.user || !result?.token) {
+        throw new Error(result?.msg || "The server did not return a valid account.");
+      }
+      const safeUser = { ...result.user };
+      delete safeUser.password;
+      saveUser(safeUser);
+      localStorage.setItem("token", result.token);
+      setIsLogin(true);
+      navigate("/");
+    } catch (requestError) {
+      console.error("Unable to authenticate.", requestError);
+      setError(requestError.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-                        {!isSignIn && (
-                            <div className="form-group">
-                                <TextField
-                                    id="signup-confirm-password"
-                                    label="Confirm Password"
-                                    required
-                                    placeholder="Confirm Your Password"
-                                    variant="standard"
-                                    type='password'
-                                    className="w-100"
-                                />
-                            </div>
-                        )}
-
-                        {isSignIn && (
-                            <a className='border-effect cursor txt'>Forgot Password</a>
-                        )}
-
-                        <div className="d-flex align-items-center mt-3 mb-3">
-                            <Button className='btn-blue btn-lg btn-big col' variant='outlined'>
-                                {isSignIn ? 'Sign In' : 'Sign Up'}
-                            </Button>
-                            <Link to="/">
-                                <Button className='btn-lg btn-big col ml-3' variant='outlined' onClick={() => context.setIsHeaderFooterShow(true)}>Cancel</Button>
-                            </Link>
-                        </div>
-
-                        <p className='txt mt-3 text-center'>
-                            {isSignIn ? (
-                                <>
-                                    Don't have an account? 
-                                    <span className='border-effect cursor' onClick={() => setIsSignIn(false)}> Sign Up</span>
-                                </>
-                            ) : (
-                                <>
-                                    Already have an account? 
-                                    <span className='border-effect cursor' onClick={() => setIsSignIn(true)}> Sign In</span>
-                                </>
-                            )}
-                        </p>
-
-                        <h6 className='mt-3 text-center font-weight-bold'>Or Continue With Social Media</h6>
-                        <Button className='loginWithGoogle mt-2' variant='outlined'>
-                            <img src={GoogleImg} alt={isSignIn ? "Sign In with Google" : "Sign Up with Google"} />
-                            {isSignIn ? 'Sign In With Google' : 'Sign Up With Google'}
-                        </Button>
-                    </form>
-                </div>
-            </div>
-        </section>
-    );
-};
-
-export default SignIn;
+  return (
+    <section className="storePageSection authPage">
+      <div className="authCard">
+        <span className="eyebrow">Welcome to VShop</span>
+        <h1>{isSignIn ? "Sign In" : "Sign Up"}</h1>
+        <p>{isSignIn ? "Access your orders and saved items." : "Create an account to start shopping."}</p>
+        {error && <div className="storeError" role="alert">{error}</div>}
+        <form onSubmit={submit} className="authForm">
+          {!isSignIn && (
+            <>
+              <label>
+                Full name
+                <input name="name" autoComplete="name" value={form.name} onChange={update} required />
+              </label>
+              <label>
+                Phone number
+                <input name="phone" autoComplete="tel" value={form.phone} onChange={update} required />
+              </label>
+            </>
+          )}
+          <label>
+            Email address
+            <input
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={update}
+              required
+            />
+          </label>
+          <label>
+            Password
+            <input
+              name="password"
+              type="password"
+              autoComplete={isSignIn ? "current-password" : "new-password"}
+              value={form.password}
+              onChange={update}
+              required
+            />
+          </label>
+          {!isSignIn && (
+            <label>
+              Confirm password
+              <input
+                name="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                value={form.confirmPassword}
+                onChange={update}
+                required
+              />
+            </label>
+          )}
+          {isSignIn && <button type="button" className="forgotPasswordLink" disabled>Forgot Password?</button>}
+          <Button type="submit" className="btn-blue btn-round authSubmit" disabled={submitting}>
+            {submitting ? "Please wait…" : isSignIn ? "Sign In" : "Sign Up"}
+          </Button>
+        </form>
+        <p className="authToggle">
+          {isSignIn ? "Not Registered?" : "Already have an account?"}{" "}
+          <button type="button" onClick={() => setIsSignIn((current) => !current)}>
+            {isSignIn ? "Sign Up" : "Sign In"}
+          </button>
+        </p>
+        <div className="socialLoginDivider">Or continue with social account</div>
+        <Button className="socialLoginButton" disabled>
+          Social sign-in is not configured
+        </Button>
+        <Link className="backToShop" to="/">Continue shopping</Link>
+      </div>
+    </section>
+  );
+}
